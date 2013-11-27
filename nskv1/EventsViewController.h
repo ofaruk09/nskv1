@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "EventsCell.h"
+#import <FacebookSDK/FacebookSDK.h>
 #import "AppDelegate.h"
-#import "FacebookService.h"
 #import "FacebookEvent.h"
 #import "EventsViewController.h"
 

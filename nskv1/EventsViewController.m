@@ -17,6 +17,7 @@
 
 @synthesize requestConnection = _requestConnection;
 @synthesize EventsList;
+UIActivityIndicatorView *loadingIndicator;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -40,6 +41,12 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     if ([self openFacebookSession]) {
+        loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        loadingIndicator.center = CGPointMake(self.view.frame.size.width / 2.0, self.view.frame.size.height / 2.0);
+        [self.view addSubview: loadingIndicator];
+        
+        [loadingIndicator startAnimating];
+        
         [self downloadEvents];
     }
 }
@@ -76,10 +83,9 @@
     FacebookEvent *model = (FacebookEvent *)[EventsList objectAtIndex:indexPath.row];
     cell.eventName.text = model.eventName;
     cell.eventDesc.text = model.eventDescription;
+    cell.eventThumb.image = model.eventImage;
     //cell.eventName.text = @"This is a test name";
     //cell.eventDesc.text = @"This is a test description";
-
-    
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -267,6 +273,12 @@
             newEvent.eventDescription = [thisEvent valueForKey:@"description"];
             newEvent.eventImageSource = [[thisEvent objectForKey:@"cover"] valueForKey:@"source"];
             newEvent.eventLocation = [thisEvent valueForKey:@"location"];
+            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
+            dispatch_async(queue, ^(void){
+                NSData *img = [[NSData alloc]initWithContentsOfURL:[NSURL URLWithString:newEvent.eventImageSource]];
+                newEvent.eventImage = [[UIImage alloc]initWithData:img];
+                NSLog(@"downloading data");
+            });
             //            NSLog(@"%@", newEvent.eventName);
             //            NSLog(@"%@", newEvent.eventID);
             //            NSLog(@"%@", newEvent.eventStartTime);
@@ -296,6 +308,8 @@
 }
 - (void)triggerRefresh{
     [self.tableView reloadData];
+    [loadingIndicator stopAnimating];
+    [loadingIndicator removeFromSuperview];
     NSLog(@"done refreshing");
     FacebookEvent *model = (FacebookEvent *)[EventsList objectAtIndex:1];
     NSLog(@"%@",[model eventName]);

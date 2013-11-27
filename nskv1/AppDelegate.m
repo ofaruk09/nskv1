@@ -10,11 +10,6 @@
 
 @implementation AppDelegate
 
-static FacebookService *fb;
-
-+ (FacebookService *)getFacebookInstance{
-    return fb;
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
