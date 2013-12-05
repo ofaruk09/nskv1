@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "FacebookEvent.h"
 #import "EventsViewController.h"
+#import "EventDetailsViewController.h"
 
 @interface EventsViewController : UITableViewController
 

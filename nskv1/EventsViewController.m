@@ -131,7 +131,6 @@ UIActivityIndicatorView *loadingIndicator;
 }
 */
 
-/*
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
@@ -139,13 +138,21 @@ UIActivityIndicatorView *loadingIndicator;
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    NSLog(@"should be here");
+    NSLog([segue identifier]);
+    NSLog(@"end of here");
+    if([[segue identifier] isEqualToString:@"eventDetails"]){
+        EventDetailsViewController *eventdet = segue.destinationViewController;
+        eventdet.fbEvent = [EventsList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+        
+    }
 }
 
- */
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 - (void)downloadEvents{
     [self sendRequests:@"303838247034/events?fields=name,start_time,cover,description,end_time,location,venue&before=NTQzMTUzNjA5MTAyMjQ3&limit=25"];
+    NSLog(@"starting new login");
 }
 
 
@@ -182,6 +189,7 @@ UIActivityIndicatorView *loadingIndicator;
                                               // detailed state checking for FBSession objects
                                           } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
                                               // send our requests if we successfully logged in
+                                              NSLog(@"user logged in");
                                               userLoggedIn = true;
                                           }
                                       }];
@@ -199,6 +207,7 @@ UIActivityIndicatorView *loadingIndicator;
 // When a request returns results, call requestComplete:result:error.
 //
 - (void)sendRequests:(NSString *)fbID {
+
     // extract the id's for which we will request the profile
     
     // create the connection object

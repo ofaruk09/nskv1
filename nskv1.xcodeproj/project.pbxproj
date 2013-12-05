@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E07C9FD18464FB100612722 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E07C9FC18464FB100612722 /* MapKit.framework */; };
+		2E3332D018513A9C005A4ECF /* WeatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332CF18513A9C005A4ECF /* WeatherViewController.m */; };
+		2EBCA6C7184F776300B4156E /* EventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */; };
+		2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBCA6C9184F7E9600B4156E /* EventImageCell.m */; };
 		2EDB52771842E1C100A58733 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52761842E1C100A58733 /* Foundation.framework */; };
 		2EDB52791842E1C100A58733 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52781842E1C100A58733 /* CoreGraphics.framework */; };
 		2EDB527B1842E1C100A58733 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB527A1842E1C100A58733 /* UIKit.framework */; };
@@ -38,6 +42,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2E07C9FC18464FB100612722 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		2E3332CE18513A9C005A4ECF /* WeatherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherViewController.h; sourceTree = "<group>"; };
+		2E3332CF18513A9C005A4ECF /* WeatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherViewController.m; sourceTree = "<group>"; };
+		2EBCA6C5184F776300B4156E /* EventDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsViewController.h; sourceTree = "<group>"; };
+		2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsViewController.m; sourceTree = "<group>"; };
+		2EBCA6C8184F7E9600B4156E /* EventImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventImageCell.h; sourceTree = "<group>"; };
+		2EBCA6C9184F7E9600B4156E /* EventImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventImageCell.m; sourceTree = "<group>"; };
 		2EDB52731842E1C100A58733 /* nskv1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nskv1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EDB52761842E1C100A58733 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2EDB52781842E1C100A58733 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -71,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E07C9FD18464FB100612722 /* MapKit.framework in Frameworks */,
 				2EDB52BB1845223D00A58733 /* FacebookSDK.framework in Frameworks */,
 				2EDB52791842E1C100A58733 /* CoreGraphics.framework in Frameworks */,
 				2EDB527B1842E1C100A58733 /* UIKit.framework in Frameworks */,
@@ -113,6 +125,7 @@
 		2EDB52751842E1C100A58733 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2E07C9FC18464FB100612722 /* MapKit.framework */,
 				2EDB52BA1845223D00A58733 /* FacebookSDK.framework */,
 				2EDB52761842E1C100A58733 /* Foundation.framework */,
 				2EDB52781842E1C100A58733 /* CoreGraphics.framework */,
@@ -125,6 +138,8 @@
 		2EDB527C1842E1C100A58733 /* nskv1 */ = {
 			isa = PBXGroup;
 			children = (
+				2EDB52911842E1C100A58733 /* Images.xcassets */,
+				2EDB527D1842E1C100A58733 /* Supporting Files */,
 				2EDB52BF184533C900A58733 /* FacebookEvent.h */,
 				2EDB52C0184533C900A58733 /* FacebookEvent.m */,
 				2EDB52851842E1C100A58733 /* AppDelegate.h */,
@@ -136,8 +151,12 @@
 				2EDB52B21842E67700A58733 /* EventsCell.m */,
 				2EDB52B71842ED3900A58733 /* EventsViewController.h */,
 				2EDB52B81842ED3900A58733 /* EventsViewController.m */,
-				2EDB52911842E1C100A58733 /* Images.xcassets */,
-				2EDB527D1842E1C100A58733 /* Supporting Files */,
+				2EBCA6C5184F776300B4156E /* EventDetailsViewController.h */,
+				2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */,
+				2EBCA6C8184F7E9600B4156E /* EventImageCell.h */,
+				2EBCA6C9184F7E9600B4156E /* EventImageCell.m */,
+				2E3332CE18513A9C005A4ECF /* WeatherViewController.h */,
+				2E3332CF18513A9C005A4ECF /* WeatherViewController.m */,
 			);
 			path = nskv1;
 			sourceTree = "<group>";
@@ -268,8 +287,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */,
 				2EDB52901842E1C100A58733 /* SecondViewController.m in Sources */,
 				2EDB52B91842ED3900A58733 /* EventsViewController.m in Sources */,
+				2EBCA6C7184F776300B4156E /* EventDetailsViewController.m in Sources */,
+				2E3332D018513A9C005A4ECF /* WeatherViewController.m in Sources */,
 				2EDB52871842E1C100A58733 /* AppDelegate.m in Sources */,
 				2EDB52831842E1C100A58733 /* main.m in Sources */,
 				2EDB52C1184533C900A58733 /* FacebookEvent.m in Sources */,
