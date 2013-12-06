@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface WeatherViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UILabel *WeatherLabelOutput;
+@property NSString *longitude;
+@property NSString *latitude;
+@property NSString *location;
 
 @end

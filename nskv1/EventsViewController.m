@@ -138,9 +138,6 @@ UIActivityIndicatorView *loadingIndicator;
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    NSLog(@"should be here");
-    NSLog([segue identifier]);
-    NSLog(@"end of here");
     if([[segue identifier] isEqualToString:@"eventDetails"]){
         EventDetailsViewController *eventdet = segue.destinationViewController;
         eventdet.fbEvent = [EventsList objectAtIndex:[self.tableView indexPathForSelectedRow].row];
@@ -272,21 +269,32 @@ UIActivityIndicatorView *loadingIndicator;
             // create the objects here and fill them up
             FacebookEvent * newEvent = [[FacebookEvent alloc]init];
             NSDictionary * thisEvent = [nodes objectAtIndex:i];
-            //NSLog([thisEvent description]);
+//            NSLog([thisEvent description]);
             newEvent.eventName = [thisEvent valueForKey:@"name"];
             newEvent.eventID = [thisEvent valueForKey:@"id"];
-            newEvent.eventStartTime = [thisEvent valueForKey:@"start_time"];
-            newEvent.eventEndTime = [thisEvent valueForKey:@"end_time"];
             newEvent.eventLongitude = [[thisEvent objectForKey:@"venue"] valueForKey:@"longitude"];
             newEvent.eventLatitude = [[thisEvent objectForKey:@"venue"] valueForKey:@"latitude"];
             newEvent.eventDescription = [thisEvent valueForKey:@"description"];
             newEvent.eventImageSource = [[thisEvent objectForKey:@"cover"] valueForKey:@"source"];
             newEvent.eventLocation = [thisEvent valueForKey:@"location"];
+            NSString *startTempString =  [thisEvent valueForKey:@"start_time"];
+            NSString *endTempString = [thisEvent valueForKey:@"end_time"];
+            newEvent.eventStartDate = [startTempString substringWithRange:NSMakeRange(0, 10)];
+            newEvent.eventEndDate = [endTempString substringWithRange:NSMakeRange(0, 10)];
+            if([startTempString length] > 10){
+               newEvent.eventStartTime = [startTempString substringWithRange:NSMakeRange(11, 5)];
+            }
+            else newEvent.eventStartTime = @"No Time Specified";
+            if ([endTempString length] > 10) {
+                newEvent.eventEndTime = [endTempString substringWithRange:NSMakeRange(11, 5)];
+            }
+            else newEvent.eventEndTime = @"No Time Specified";
+            
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
             dispatch_async(queue, ^(void){
                 NSData *img = [[NSData alloc]initWithContentsOfURL:[NSURL URLWithString:newEvent.eventImageSource]];
                 newEvent.eventImage = [[UIImage alloc]initWithData:img];
-                NSLog(@"downloading data");
+                [self.tableView reloadData];
             });
             //            NSLog(@"%@", newEvent.eventName);
             //            NSLog(@"%@", newEvent.eventID);
@@ -321,7 +329,6 @@ UIActivityIndicatorView *loadingIndicator;
     [loadingIndicator removeFromSuperview];
     NSLog(@"done refreshing");
     FacebookEvent *model = (FacebookEvent *)[EventsList objectAtIndex:1];
-    NSLog(@"%@",[model eventName]);
 }
 
 @end

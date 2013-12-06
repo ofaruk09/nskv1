@@ -28,7 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    NSLog(fbEvent.eventLocation);
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -61,7 +61,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.item == 0){
-        NSLog(@"%i",indexPath.item);
         static NSString *CellIdentifier = @"eventImage";
         EventImageCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         cell.eventImage.image = fbEvent.eventImage;
@@ -87,14 +86,14 @@
         static NSString *CellIdentifier = @"eventDetailsCell";
         UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = @"Event Start Time";
-        cell.detailTextLabel.text = fbEvent.eventStartTime;
+        cell.detailTextLabel.text = [[fbEvent.eventStartDate stringByAppendingString:@" at "]stringByAppendingString:fbEvent.eventStartTime];
         return cell;
     }
     else if (indexPath.item == 4){
         static NSString *CellIdentifier = @"eventDetailsCell";
         UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = @"Event End Time";
-        cell.detailTextLabel.text = fbEvent.eventEndTime;
+        cell.detailTextLabel.text = [[fbEvent.eventEndDate stringByAppendingString:@" at "]stringByAppendingString:fbEvent.eventEndTime];
         return cell;
     }
     else {
@@ -163,16 +162,19 @@
  }
  */
 
-/*
+
  #pragma mark - Navigation
  
  // In a story board-based application, you will often want to do a little preparation before navigation
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
  {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
+     if([[segue identifier] isEqualToString:@"showWeatherForEvent"]){
+         WeatherViewController *wvController = segue.destinationViewController;
+         wvController.longitude = fbEvent.eventLongitude;
+         wvController.latitude = fbEvent.eventLatitude;
+         wvController.location = fbEvent.eventLocation; 
+     }
  }
  
- */
 
 @end

@@ -19,4 +19,6 @@
 @synthesize eventImage;
 @synthesize eventImageSource;
 @synthesize eventEndTime;
+@synthesize eventStartDate;
+@synthesize eventEndDate;
 @end

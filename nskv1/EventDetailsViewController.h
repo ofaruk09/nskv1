@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FacebookEvent.h"
 #import "EventImageCell.h"
+#import "WeatherViewController.h"
 
 @interface EventDetailsViewController : UITableViewController
 @property (strong, nonatomic) IBOutlet UIImageView *eventImageView;
