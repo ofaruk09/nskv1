@@ -272,8 +272,8 @@ UIActivityIndicatorView *loadingIndicator;
 //            NSLog([thisEvent description]);
             newEvent.eventName = [thisEvent valueForKey:@"name"];
             newEvent.eventID = [thisEvent valueForKey:@"id"];
-            newEvent.eventLongitude = [[thisEvent objectForKey:@"venue"] valueForKey:@"longitude"];
-            newEvent.eventLatitude = [[thisEvent objectForKey:@"venue"] valueForKey:@"latitude"];
+            newEvent.eventLongitude = [[[thisEvent objectForKey:@"venue"] valueForKey:@"longitude"]floatValue];
+            newEvent.eventLatitude = [[[thisEvent objectForKey:@"venue"] valueForKey:@"latitude"]floatValue];
             newEvent.eventDescription = [thisEvent valueForKey:@"description"];
             newEvent.eventImageSource = [[thisEvent objectForKey:@"cover"] valueForKey:@"source"];
             newEvent.eventLocation = [thisEvent valueForKey:@"location"];
@@ -328,7 +328,6 @@ UIActivityIndicatorView *loadingIndicator;
     [loadingIndicator stopAnimating];
     [loadingIndicator removeFromSuperview];
     NSLog(@"done refreshing");
-    FacebookEvent *model = (FacebookEvent *)[EventsList objectAtIndex:1];
 }
 
 @end

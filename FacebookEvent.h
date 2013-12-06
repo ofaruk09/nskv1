@@ -13,8 +13,8 @@
 @property NSString * eventID;
 @property NSString * eventName;
 @property NSString * eventLocation;
-@property NSString * eventLongitude;
-@property NSString * eventLatitude;
+@property float eventLongitude;
+@property float eventLatitude;
 @property NSString * eventStartTime;
 @property NSString * eventStartDate;
 @property NSString * eventEndTime;
