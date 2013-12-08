@@ -28,7 +28,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(fbEvent.eventLocation);
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -86,14 +85,39 @@
         static NSString *CellIdentifier = @"eventDetailsCell";
         UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = @"Event Start Time";
-        cell.detailTextLabel.text = [[fbEvent.eventStartDate stringByAppendingString:@" at "]stringByAppendingString:fbEvent.eventStartTime];
+        if([fbEvent.dateFormatterStart dateFormat].length > 10){
+            NSString *date = [[fbEvent.dateFormatterStart stringFromDate:fbEvent.eventStartDate]substringWithRange:NSMakeRange(0, 10)];
+            NSString *time = [[fbEvent.dateFormatterStart stringFromDate:fbEvent.eventStartDate]substringWithRange:NSMakeRange(11, 5)];
+            cell.detailTextLabel.text = [[date stringByAppendingString:@" at "] stringByAppendingString:time];
+        }
+        else
+        {
+            NSString *date = [fbEvent.dateFormatterStart stringFromDate:fbEvent.eventStartDate];
+            cell.detailTextLabel.text = [date stringByAppendingString:@" at no time specified"];
+        }
+        
         return cell;
     }
     else if (indexPath.item == 4){
         static NSString *CellIdentifier = @"eventDetailsCell";
         UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = @"Event End Time";
-        cell.detailTextLabel.text = [[fbEvent.eventEndDate stringByAppendingString:@" at "]stringByAppendingString:fbEvent.eventEndTime];
+        if([fbEvent.dateFormatterEnd dateFormat].length > 10 && fbEvent.eventEndDate != nil)
+        {
+            NSString *date = [[fbEvent.dateFormatterEnd stringFromDate:fbEvent.eventEndDate]substringWithRange:NSMakeRange(0, 10)];
+            NSString *time = [[fbEvent.dateFormatterEnd stringFromDate:fbEvent.eventEndDate]substringWithRange:NSMakeRange(11, 5)];
+            cell.detailTextLabel.text = [[date stringByAppendingString:@" at "] stringByAppendingString:time];
+        }
+        else if ([fbEvent.dateFormatterEnd dateFormat].length <= 10 && fbEvent.eventEndDate != nil)
+        {
+            NSString *date = [fbEvent.dateFormatterEnd stringFromDate:fbEvent.eventEndDate];
+            cell.detailTextLabel.text = [date stringByAppendingString:@" at no time specified"];
+        }
+        else
+        {
+            cell.detailTextLabel.text = @"Contact Supervisor for Information";
+        }
+        //cell.detailTextLabel.text = [[fbEvent.eventEndDate stringByAppendingString:@" at "]stringByAppendingString:fbEvent.eventEndTime];
         return cell;
     }
     else {
@@ -169,10 +193,18 @@
  - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
  {
      if([[segue identifier] isEqualToString:@"showWeatherForEvent"]){
-         WeatherViewController *wvController = segue.destinationViewController;
-         wvController.longitude = fbEvent.eventLongitude;
-         wvController.latitude = fbEvent.eventLatitude;
-         wvController.location = fbEvent.eventLocation; 
+         // check if within 5 days of event day
+         double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
+         timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
+         
+         //if(timeToEvent <= 5.0f){
+             WeatherViewController *wvController = segue.destinationViewController;
+             wvController.fbEvent = fbEvent;
+             wvController.timeToEvent = timeToEvent;
+         //}
+         //else{
+             //show message to show no wether data beyond 5 days!
+         //}
      }
  }
  

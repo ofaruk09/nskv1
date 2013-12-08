@@ -10,14 +10,17 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "EventDetailsViewController.h"
+#import "FacebookEvent.h"
+#import "WeatherEvent.h"
 
 @interface WeatherViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UILabel *WeatherLabelOutput;
-@property float longitude;
-@property float latitude;
-@property NSString *location;
+@property FacebookEvent *fbEvent;
+@property double timeToEvent;
+@property WeatherEvent *weatherEvent;
 - (void) downloadSiteList: (CLLocation *)thisLocation;
 - (void) determineVenueLocation;
-- (NSString *) findClosestBaseStation:(CLLocation *)thisLocation;
+- (void) findWeatherDataForTimeAndPlace:(CLLocation*)myLocation locationList:(NSDictionary*)locationList;
+- (void) createWeatherObject:(NSDictionary *)weather;
 
 @end

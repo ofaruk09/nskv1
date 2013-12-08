@@ -15,10 +15,10 @@
 @synthesize eventLatitude;
 @synthesize eventLocation;
 @synthesize eventLongitude;
-@synthesize eventStartTime;
 @synthesize eventImage;
 @synthesize eventImageSource;
-@synthesize eventEndTime;
 @synthesize eventStartDate;
 @synthesize eventEndDate;
+@synthesize dateFormatterStart;
+@synthesize dateFormatterEnd;
 @end

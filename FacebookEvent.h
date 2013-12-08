@@ -15,13 +15,13 @@
 @property NSString * eventLocation;
 @property float eventLongitude;
 @property float eventLatitude;
-@property NSString * eventStartTime;
-@property NSString * eventStartDate;
-@property NSString * eventEndTime;
-@property NSString * eventEndDate;
+@property NSDate * eventStartDate;
+@property NSDate * eventEndDate;
 @property NSString * eventDescription;
 @property NSString * eventImageSource;
 @property UIImage * eventImage;
+@property NSDateFormatter *dateFormatterStart;
+@property NSDateFormatter *dateFormatterEnd;
 
 
 @end

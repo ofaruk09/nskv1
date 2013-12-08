@@ -279,22 +279,41 @@ UIActivityIndicatorView *loadingIndicator;
             newEvent.eventLocation = [thisEvent valueForKey:@"location"];
             NSString *startTempString =  [thisEvent valueForKey:@"start_time"];
             NSString *endTempString = [thisEvent valueForKey:@"end_time"];
-            newEvent.eventStartDate = [startTempString substringWithRange:NSMakeRange(0, 10)];
-            newEvent.eventEndDate = [endTempString substringWithRange:NSMakeRange(0, 10)];
             if([startTempString length] > 10){
-               newEvent.eventStartTime = [startTempString substringWithRange:NSMakeRange(11, 5)];
+                NSDateFormatter *format = [[NSDateFormatter alloc]init];
+                [format setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+                NSDate *startDate = [format dateFromString:startTempString];
+                newEvent.eventStartDate = startDate;
+                newEvent.dateFormatterStart = format;
             }
-            else newEvent.eventStartTime = @"No Time Specified";
+            else{
+                NSDateFormatter *format = [[NSDateFormatter alloc]init];
+                [format setDateFormat:@"yyyy-MM-dd"];
+                NSDate *startDate = [format dateFromString:startTempString];
+                newEvent.eventStartDate = startDate;
+                newEvent.dateFormatterStart = format;
+            }
             if ([endTempString length] > 10) {
-                newEvent.eventEndTime = [endTempString substringWithRange:NSMakeRange(11, 5)];
+                NSDateFormatter *format = [[NSDateFormatter alloc]init];
+                [format setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+                NSDate *startDate = [format dateFromString:endTempString];
+                newEvent.eventEndDate = startDate;
+                newEvent.dateFormatterEnd = format;
             }
-            else newEvent.eventEndTime = @"No Time Specified";
+            else{
+                if(endTempString != nil){
+                    NSDateFormatter *format = [[NSDateFormatter alloc]init];
+                [format setDateFormat:@"yyyy-MM-dd"];
+                NSDate *startDate = [format dateFromString:endTempString];
+                newEvent.eventEndDate = startDate;
+                newEvent.dateFormatterEnd = format;
+                }
+            }
             
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
             dispatch_async(queue, ^(void){
                 NSData *img = [[NSData alloc]initWithContentsOfURL:[NSURL URLWithString:newEvent.eventImageSource]];
                 newEvent.eventImage = [[UIImage alloc]initWithData:img];
-                [self.tableView reloadData];
             });
             //            NSLog(@"%@", newEvent.eventName);
             //            NSLog(@"%@", newEvent.eventID);

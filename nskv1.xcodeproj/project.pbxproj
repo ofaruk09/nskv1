@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E07C9FD18464FB100612722 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E07C9FC18464FB100612722 /* MapKit.framework */; };
 		2E3332D018513A9C005A4ECF /* WeatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332CF18513A9C005A4ECF /* WeatherViewController.m */; };
+		2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332D818552588005A4ECF /* WeatherEvent.m */; };
 		2EBCA6C7184F776300B4156E /* EventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */; };
 		2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBCA6C9184F7E9600B4156E /* EventImageCell.m */; };
 		2EDB52771842E1C100A58733 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52761842E1C100A58733 /* Foundation.framework */; };
@@ -45,6 +46,8 @@
 		2E07C9FC18464FB100612722 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		2E3332CE18513A9C005A4ECF /* WeatherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherViewController.h; sourceTree = "<group>"; };
 		2E3332CF18513A9C005A4ECF /* WeatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherViewController.m; sourceTree = "<group>"; };
+		2E3332D718552588005A4ECF /* WeatherEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherEvent.h; sourceTree = "<group>"; };
+		2E3332D818552588005A4ECF /* WeatherEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherEvent.m; sourceTree = "<group>"; };
 		2EBCA6C5184F776300B4156E /* EventDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsViewController.h; sourceTree = "<group>"; };
 		2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsViewController.m; sourceTree = "<group>"; };
 		2EBCA6C8184F7E9600B4156E /* EventImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventImageCell.h; sourceTree = "<group>"; };
@@ -157,6 +160,8 @@
 				2EBCA6C9184F7E9600B4156E /* EventImageCell.m */,
 				2E3332CE18513A9C005A4ECF /* WeatherViewController.h */,
 				2E3332CF18513A9C005A4ECF /* WeatherViewController.m */,
+				2E3332D718552588005A4ECF /* WeatherEvent.h */,
+				2E3332D818552588005A4ECF /* WeatherEvent.m */,
 			);
 			path = nskv1;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */,
+				2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */,
 				2EDB52901842E1C100A58733 /* SecondViewController.m in Sources */,
 				2EDB52B91842ED3900A58733 /* EventsViewController.m in Sources */,
 				2EBCA6C7184F776300B4156E /* EventDetailsViewController.m in Sources */,
