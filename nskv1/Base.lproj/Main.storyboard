@@ -206,7 +206,7 @@
                         <viewControllerLayoutGuide type="top" id="Lvm-KS-VQa"/>
                         <viewControllerLayoutGuide type="bottom" id="PcK-gc-JBT"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lAP-wS-6fg">
+                    <view key="view" contentMode="scaleToFill" id="lAP-wS-6fg" customClass="WeatherView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>

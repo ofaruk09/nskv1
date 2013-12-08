@@ -213,7 +213,8 @@ const NSArray *weatherTypes;
     weatherEvent.eventTemperature = [weatherContent valueForKey:@"T"];
     weatherEvent.eventFeelsLikeTemperature = [weatherContent valueForKey:@"F"];
     weatherEvent.eventVisibility = [weatherContent valueForKey:@"V"];
-    NSUInteger wTemp = [[weatherTypes valueForKey:@"W"] integerValue];
+    //NSLog([weatherContent])
+    NSUInteger wTemp = [[weatherContent valueForKey:@"W"] integerValue];
     weatherEvent.eventWeatherType = [weatherTypes objectAtIndex:wTemp];
     weatherEvent.eventWeatherTypeValue = [NSString stringWithFormat:@"%i",wTemp];
     weatherEvent.eventWindDirection = [weatherContent valueForKey:@"D"];
