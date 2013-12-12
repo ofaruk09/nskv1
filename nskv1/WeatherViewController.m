@@ -14,14 +14,28 @@
 
 @implementation WeatherViewController
 @synthesize fbEvent;
-@synthesize WeatherLabelOutput;
 @synthesize timeToEvent;
-@synthesize weatherEvent;
+@synthesize thisWeatherEvent;
+@synthesize windSpeedMeter;
+@synthesize weatherActualTempLabel;
+@synthesize weatherBackgroundImage;
+@synthesize WeatherConditionLabel;
+@synthesize WeatherFeelsLikeLabel;
+@synthesize WindDirectionLabel;
+@synthesize WindGustingLabel;
+@synthesize windSpeedLabel;
+@synthesize WarningMessages;
+@synthesize VisibilityLabel;
+@synthesize windGustingMeter;
+@synthesize ScrollView;
+@synthesize baseStationLabel;
 NSString *baseWeatherAddress = @"http://datapoint.metoffice.gov.uk/public/data/";
 NSString *apiKey = @"key=9a359b8e-179a-4164-8e29-dcfab50bed8a";
 NSString *allLocations = @"val/wxfcs/all/json/sitelist";
 NSString *baseStation = @"val/wxfcs/all/json/";
 const NSArray *weatherTypes;
+const float maxSpeed = 20;
+const float meterMaxSize = 287;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,6 +49,9 @@ const NSArray *weatherTypes;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    thisWeatherEvent = [[WeatherEvent alloc]init];
+    [ScrollView setContentSize: CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)];
+    [ScrollView setScrollEnabled:true];
     FacebookEvent *temp = [[FacebookEvent alloc]init];
     temp.eventLongitude = 1.2724;
     temp.eventLatitude = 51.9271;
@@ -45,6 +62,7 @@ const NSArray *weatherTypes;
     temp.dateFormatterStart = format;
     fbEvent = temp;
     timeToEvent = 4.96;
+    
     weatherTypes = [[NSArray alloc]initWithObjects: @"Clear Night",
                     @"Sunny Day",
                     @"Partly Cloudy (Night)",
@@ -79,10 +97,14 @@ const NSArray *weatherTypes;
     
     //Do some checks to see if 5 days from event
     //Do some checks if time exists in event information
+    //[self startAnim];
     
     [self determineVenueLocation];
 	// Do any additional setup after loading the view.
     // When sending a request, to get ALL the data including gust, we must provide the city!
+}
+- (void)startAnim
+{
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -95,7 +117,7 @@ const NSArray *weatherTypes;
     if(fbEvent.eventLongitude != 0 && fbEvent.eventLatitude != 0){
         // we have the long/lat we can find the closest base station
         CLLocation *longLat = [[CLLocation alloc]initWithLatitude:fbEvent.eventLatitude longitude:fbEvent.eventLongitude];
-        [self downloadSiteList:longLat];
+                [self downloadSiteList:longLat];
     }
     else if (fbEvent.eventLocation != nil){
         // we MIGHT be able to use geocoders
@@ -107,6 +129,7 @@ const NSArray *weatherTypes;
             }
             else{
                 CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                
                 [self downloadSiteList:[placemark location]];
             }
         }];
@@ -122,6 +145,7 @@ const NSArray *weatherTypes;
 - (void) downloadSiteList:(CLLocation *)thisLocation
 {
     NSString * siteList = [[NSString alloc]initWithFormat:@"%@%@?%@",baseWeatherAddress,allLocations,apiKey];
+    
     __block NSDictionary * weatherData;
     NSURL *url = [NSURL URLWithString:siteList];
     NSURLRequest * request = [NSURLRequest requestWithURL:url
@@ -142,13 +166,16 @@ const NSArray *weatherTypes;
                                                              error: &error];
              // HANDLE DATA HERE
              //NSLog([weatherData description]);
+             
              [self findWeatherDataForTimeAndPlace:thisLocation locationList:weatherData];
          }
          else if([data length]  ==  0 && error == nil){
              NSLog(@"Nothing came through");
          }
          if(error != nil) {
-             NSLog(@"ERROR = %@", error);
+             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"MetOffice Offline" message:@"The service is currently unavailable, please try again later" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+             
+             [alert show];
          }
      }];
 }
@@ -200,7 +227,9 @@ const NSArray *weatherTypes;
              NSLog(@"Nothing came through");
          }
          if(error != nil) {
-             NSLog(@"ERROR = %@", error);
+             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"MetOffice Offline" message:@"The service is currently unavailable, please try again later" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+             
+             [alert show];
          }
      }];
 }
@@ -208,21 +237,66 @@ const NSArray *weatherTypes;
 - (void) createWeatherObject:(NSDictionary *)weather
 {
     //NSLog([weather description]);
+    NSDictionary *locationData = [[[weather objectForKey:@"SiteRep"] objectForKey:@"DV"]objectForKey:@"Location"];
+    thisWeatherEvent.baseStation = [locationData valueForKey:@"name"];
     NSDictionary *weatherContent = [[[[[weather objectForKey:@"SiteRep"] objectForKey:@"DV"]objectForKey:@"Location"]objectForKey:@"Period"]objectForKey:@"Rep"];
-    NSLog([weatherContent description]);
-    weatherEvent.eventTemperature = [weatherContent valueForKey:@"T"];
-    weatherEvent.eventFeelsLikeTemperature = [weatherContent valueForKey:@"F"];
-    weatherEvent.eventVisibility = [weatherContent valueForKey:@"V"];
+    thisWeatherEvent.eventTemperature = [weatherContent valueForKey:@"T"];
+    thisWeatherEvent.eventFeelsLikeTemperature = [weatherContent valueForKey:@"F"];
+    thisWeatherEvent.eventVisibility = [weatherContent valueForKey:@"V"];
     //NSLog([weatherContent])
     NSUInteger wTemp = [[weatherContent valueForKey:@"W"] integerValue];
-    weatherEvent.eventWeatherType = [weatherTypes objectAtIndex:wTemp];
-    weatherEvent.eventWeatherTypeValue = [NSString stringWithFormat:@"%i",wTemp];
-    weatherEvent.eventWindDirection = [weatherContent valueForKey:@"D"];
-    weatherEvent.eventWindGusting = [weatherContent valueForKey:@"G"];
-    weatherEvent.eventWindSpeed = [weatherContent valueForKey:@"S"];
-    
+    thisWeatherEvent.eventWeatherType = [weatherTypes objectAtIndex:wTemp];
+    thisWeatherEvent.eventWeatherTypeValue = [NSString stringWithFormat:@"%i",wTemp];
+    thisWeatherEvent.eventWindDirection = [weatherContent valueForKey:@"D"];
+    thisWeatherEvent.eventWindGusting = [weatherContent valueForKey:@"G"];
+    thisWeatherEvent.eventWindSpeed = [weatherContent valueForKey:@"S"];
     //Remove Spinner Here
     //Start Building View
+    NSString *message;
+    if([thisWeatherEvent.eventWindGusting floatValue] > maxSpeed)
+    {
+        message = @"Wind gust exceeds 20mph, contact the event supervisor for more information";
+    }
+    else message = @"It seems ok to go kayaking in these conditions";
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        ///////////////////////////////////////////////////////////////////////////
+        weatherActualTempLabel.text = [thisWeatherEvent.eventTemperature stringByAppendingString:@"°C"];
+        WeatherFeelsLikeLabel.text = [thisWeatherEvent.eventFeelsLikeTemperature stringByAppendingString:@"°C"];
+        WeatherConditionLabel.text = thisWeatherEvent.eventWeatherType;
+        VisibilityLabel.text = thisWeatherEvent.eventVisibility;
+        windSpeedLabel.text = thisWeatherEvent.eventWindSpeed;
+        WindGustingLabel.text = thisWeatherEvent.eventWindGusting;
+        WindDirectionLabel.text = thisWeatherEvent.eventWindDirection;
+        WarningMessages.text = message;
+        baseStationLabel.text = thisWeatherEvent.baseStation;
+        
+        //calc bar percentage
+        float percentWindSpeed = ([thisWeatherEvent.eventWindSpeed floatValue]/maxSpeed)*meterMaxSize;
+        float percentWindGust = ([thisWeatherEvent.eventWindGusting floatValue]/maxSpeed)*meterMaxSize;
+        
+        windSpeedMeter.layer.anchorPoint = CGPointMake(0.0, 0.5);
+        CABasicAnimation *windSpeedAnimation;
+        windSpeedAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale.x"];
+        windSpeedAnimation.fromValue = [NSNumber numberWithFloat:0.1f];
+        windSpeedAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+        windSpeedAnimation.duration = 1.0;
+        windSpeedAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        [windSpeedMeter.layer addAnimation:windSpeedAnimation forKey:@"position"];
+        windSpeedMeter.frame = CGRectMake(windSpeedMeter.frame.origin.x, windSpeedMeter.frame.origin.y, percentWindSpeed, 30);
+        
+        windGustingMeter.layer.anchorPoint = CGPointMake(0.0, 0.5);
+        CABasicAnimation *windGustAnimation;
+        windGustAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale.x"];
+        windGustAnimation.fromValue = [NSNumber numberWithFloat:0.1f];
+        windGustAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+        windGustAnimation.duration = 1.0;
+        windGustAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        [windGustingMeter.layer addAnimation:windGustAnimation forKey:@"position"];
+        windGustingMeter.frame = CGRectMake(windGustingMeter.frame.origin.x, windGustingMeter.frame.origin.y, percentWindGust, 30);
+        ///////////////////////////////////////////////////////////////////////
+        
+    });
 }
 - (void)didReceiveMemoryWarning
 {
@@ -232,4 +306,15 @@ const NSArray *weatherTypes;
 // reference iOS 6 cookbook chapter 9.2
 // reference serialize JSON response to dictionary: https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSJSONSerialization_Class/Reference/Reference.html#//apple_ref/doc/uid/TP40010946-CH1-SW2
 // using blocks to take stuff out the async bit of the code: https://developer.apple.com/library/ios/documentation/cocoa/conceptual/ProgrammingWithObjectiveC/WorkingwithBlocks/WorkingwithBlocks.html
+
+// IMG SOURCE
+// http://www.stockvault.net/photo/124678/dawn
+// http://www.stockvault.net/photo/133780/cloudy-blue-sky
+// http://www.stockvault.net/photo/147063/early-foggy-morning
+// http://www.stockvault.net/photo/101022/early-morning-rain
+// http://www.stockvault.net/photo/101628/rain-cloud-series-image-15-of-15
+// http://www.stockvault.net/photo/150904/tropical-storm-window-raindrops
+// http://www.stockvault.net/photo/102038/path-in-the-snow
+// http://www.stockvault.net/photo/131885/lightning
+
 @end

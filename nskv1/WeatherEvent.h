@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface WeatherEvent : NSObject
-@property NSString *eventTemperature;
-@property NSString *eventWindDirection;
-@property NSString *eventWindSpeed;
-@property NSString *eventWindGusting;
-@property NSString *eventWeatherType;
-@property NSString *eventWeatherTypeValue;
-@property NSString *eventVisibility;
-@property NSString *eventFeelsLikeTemperature;
+@property NSString * eventTemperature;
+@property NSString * eventWindDirection;
+@property NSString * eventWindSpeed;
+@property NSString * eventWindGusting;
+@property NSString * eventWeatherType;
+@property NSString * eventWeatherTypeValue;
+@property NSString * eventVisibility;
+@property NSString * eventFeelsLikeTemperature;
+@property NSString * baseStation;
 @end

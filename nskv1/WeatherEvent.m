@@ -17,4 +17,5 @@
 @synthesize eventWindDirection;
 @synthesize eventWindGusting;
 @synthesize eventWindSpeed;
+@synthesize baseStation;
 @end
