@@ -10,6 +10,7 @@
 		2E07C9FD18464FB100612722 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E07C9FC18464FB100612722 /* MapKit.framework */; };
 		2E3332D018513A9C005A4ECF /* WeatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332CF18513A9C005A4ECF /* WeatherViewController.m */; };
 		2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332D818552588005A4ECF /* WeatherEvent.m */; };
+		2E41A01B185B8FCD00CDF189 /* dateTimePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E41A01A185B8FCD00CDF189 /* dateTimePickerViewController.m */; };
 		2EBCA6C7184F776300B4156E /* EventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */; };
 		2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBCA6C9184F7E9600B4156E /* EventImageCell.m */; };
 		2EDB52771842E1C100A58733 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52761842E1C100A58733 /* Foundation.framework */; };
@@ -19,7 +20,6 @@
 		2EDB52831842E1C100A58733 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52821842E1C100A58733 /* main.m */; };
 		2EDB52871842E1C100A58733 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52861842E1C100A58733 /* AppDelegate.m */; };
 		2EDB528A1842E1C100A58733 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EDB52881842E1C100A58733 /* Main.storyboard */; };
-		2EDB52901842E1C100A58733 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB528F1842E1C100A58733 /* SecondViewController.m */; };
 		2EDB52991842E1C100A58733 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52981842E1C100A58733 /* XCTest.framework */; };
 		2EDB529A1842E1C100A58733 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52761842E1C100A58733 /* Foundation.framework */; };
 		2EDB529B1842E1C100A58733 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB527A1842E1C100A58733 /* UIKit.framework */; };
@@ -30,6 +30,7 @@
 		2EDB52BB1845223D00A58733 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52BA1845223D00A58733 /* FacebookSDK.framework */; };
 		2EDB52C1184533C900A58733 /* FacebookEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52C0184533C900A58733 /* FacebookEvent.m */; };
 		2EF26683185A3DF5009D2480 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EF26682185A3DF5009D2480 /* Images.xcassets */; };
+		2EF8599D185B77C7007A6B5C /* VenueFinderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EF8599C185B77C7007A6B5C /* VenueFinderViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,8 @@
 		2E3332CF18513A9C005A4ECF /* WeatherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherViewController.m; sourceTree = "<group>"; };
 		2E3332D718552588005A4ECF /* WeatherEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherEvent.h; sourceTree = "<group>"; };
 		2E3332D818552588005A4ECF /* WeatherEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherEvent.m; sourceTree = "<group>"; };
+		2E41A019185B8FCD00CDF189 /* dateTimePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dateTimePickerViewController.h; sourceTree = "<group>"; };
+		2E41A01A185B8FCD00CDF189 /* dateTimePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dateTimePickerViewController.m; sourceTree = "<group>"; };
 		2EBCA6C5184F776300B4156E /* EventDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsViewController.h; sourceTree = "<group>"; };
 		2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsViewController.m; sourceTree = "<group>"; };
 		2EBCA6C8184F7E9600B4156E /* EventImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventImageCell.h; sourceTree = "<group>"; };
@@ -63,8 +66,6 @@
 		2EDB52851842E1C100A58733 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2EDB52861842E1C100A58733 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2EDB52891842E1C100A58733 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		2EDB528E1842E1C100A58733 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		2EDB528F1842E1C100A58733 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		2EDB52971842E1C100A58733 /* nskv1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nskv1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EDB52981842E1C100A58733 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2EDB52A01842E1C100A58733 /* nskv1Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "nskv1Tests-Info.plist"; sourceTree = "<group>"; };
@@ -78,6 +79,8 @@
 		2EDB52BF184533C900A58733 /* FacebookEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FacebookEvent.h; path = ../FacebookEvent.h; sourceTree = "<group>"; };
 		2EDB52C0184533C900A58733 /* FacebookEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FacebookEvent.m; path = ../FacebookEvent.m; sourceTree = "<group>"; };
 		2EF26682185A3DF5009D2480 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		2EF8599B185B77C7007A6B5C /* VenueFinderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VenueFinderViewController.h; sourceTree = "<group>"; };
+		2EF8599C185B77C7007A6B5C /* VenueFinderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VenueFinderViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,8 +151,6 @@
 				2EDB52851842E1C100A58733 /* AppDelegate.h */,
 				2EDB52861842E1C100A58733 /* AppDelegate.m */,
 				2EDB52881842E1C100A58733 /* Main.storyboard */,
-				2EDB528E1842E1C100A58733 /* SecondViewController.h */,
-				2EDB528F1842E1C100A58733 /* SecondViewController.m */,
 				2EDB52B11842E67700A58733 /* EventsCell.h */,
 				2EDB52B21842E67700A58733 /* EventsCell.m */,
 				2EDB52B71842ED3900A58733 /* EventsViewController.h */,
@@ -162,6 +163,10 @@
 				2E3332CF18513A9C005A4ECF /* WeatherViewController.m */,
 				2E3332D718552588005A4ECF /* WeatherEvent.h */,
 				2E3332D818552588005A4ECF /* WeatherEvent.m */,
+				2EF8599B185B77C7007A6B5C /* VenueFinderViewController.h */,
+				2EF8599C185B77C7007A6B5C /* VenueFinderViewController.m */,
+				2E41A019185B8FCD00CDF189 /* dateTimePickerViewController.h */,
+				2E41A01A185B8FCD00CDF189 /* dateTimePickerViewController.m */,
 			);
 			path = nskv1;
 			sourceTree = "<group>";
@@ -294,11 +299,12 @@
 			files = (
 				2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */,
 				2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */,
-				2EDB52901842E1C100A58733 /* SecondViewController.m in Sources */,
 				2EDB52B91842ED3900A58733 /* EventsViewController.m in Sources */,
 				2EBCA6C7184F776300B4156E /* EventDetailsViewController.m in Sources */,
 				2E3332D018513A9C005A4ECF /* WeatherViewController.m in Sources */,
 				2EDB52871842E1C100A58733 /* AppDelegate.m in Sources */,
+				2EF8599D185B77C7007A6B5C /* VenueFinderViewController.m in Sources */,
+				2E41A01B185B8FCD00CDF189 /* dateTimePickerViewController.m in Sources */,
 				2EDB52831842E1C100A58733 /* main.m in Sources */,
 				2EDB52C1184533C900A58733 /* FacebookEvent.m in Sources */,
 				2EDB52B31842E67700A58733 /* EventsCell.m in Sources */,
