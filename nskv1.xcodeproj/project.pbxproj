@@ -20,7 +20,6 @@
 		2EDB52871842E1C100A58733 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52861842E1C100A58733 /* AppDelegate.m */; };
 		2EDB528A1842E1C100A58733 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EDB52881842E1C100A58733 /* Main.storyboard */; };
 		2EDB52901842E1C100A58733 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB528F1842E1C100A58733 /* SecondViewController.m */; };
-		2EDB52921842E1C100A58733 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EDB52911842E1C100A58733 /* Images.xcassets */; };
 		2EDB52991842E1C100A58733 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52981842E1C100A58733 /* XCTest.framework */; };
 		2EDB529A1842E1C100A58733 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52761842E1C100A58733 /* Foundation.framework */; };
 		2EDB529B1842E1C100A58733 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB527A1842E1C100A58733 /* UIKit.framework */; };
@@ -30,6 +29,7 @@
 		2EDB52B91842ED3900A58733 /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52B81842ED3900A58733 /* EventsViewController.m */; };
 		2EDB52BB1845223D00A58733 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52BA1845223D00A58733 /* FacebookSDK.framework */; };
 		2EDB52C1184533C900A58733 /* FacebookEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52C0184533C900A58733 /* FacebookEvent.m */; };
+		2EF26683185A3DF5009D2480 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EF26682185A3DF5009D2480 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +65,6 @@
 		2EDB52891842E1C100A58733 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2EDB528E1842E1C100A58733 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		2EDB528F1842E1C100A58733 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
-		2EDB52911842E1C100A58733 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2EDB52971842E1C100A58733 /* nskv1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nskv1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EDB52981842E1C100A58733 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2EDB52A01842E1C100A58733 /* nskv1Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "nskv1Tests-Info.plist"; sourceTree = "<group>"; };
@@ -78,6 +77,7 @@
 		2EDB52BA1845223D00A58733 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		2EDB52BF184533C900A58733 /* FacebookEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FacebookEvent.h; path = ../FacebookEvent.h; sourceTree = "<group>"; };
 		2EDB52C0184533C900A58733 /* FacebookEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FacebookEvent.m; path = ../FacebookEvent.m; sourceTree = "<group>"; };
+		2EF26682185A3DF5009D2480 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +141,7 @@
 		2EDB527C1842E1C100A58733 /* nskv1 */ = {
 			isa = PBXGroup;
 			children = (
-				2EDB52911842E1C100A58733 /* Images.xcassets */,
+				2EF26682185A3DF5009D2480 /* Images.xcassets */,
 				2EDB527D1842E1C100A58733 /* Supporting Files */,
 				2EDB52BF184533C900A58733 /* FacebookEvent.h */,
 				2EDB52C0184533C900A58733 /* FacebookEvent.m */,
@@ -271,7 +271,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2EDB52921842E1C100A58733 /* Images.xcassets in Resources */,
+				2EF26683185A3DF5009D2480 /* Images.xcassets in Resources */,
 				2EDB52811842E1C100A58733 /* InfoPlist.strings in Resources */,
 				2EDB528A1842E1C100A58733 /* Main.storyboard in Resources */,
 			);

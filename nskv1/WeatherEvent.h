@@ -18,4 +18,5 @@
 @property NSString * eventVisibility;
 @property NSString * eventFeelsLikeTemperature;
 @property NSString * baseStation;
+@property UIImage *eventWeatherImage;
 @end

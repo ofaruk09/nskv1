@@ -18,4 +18,5 @@
 @synthesize eventWindGusting;
 @synthesize eventWindSpeed;
 @synthesize baseStation;
+@synthesize eventWeatherImage;
 @end

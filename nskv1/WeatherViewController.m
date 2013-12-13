@@ -34,8 +34,9 @@ NSString *apiKey = @"key=9a359b8e-179a-4164-8e29-dcfab50bed8a";
 NSString *allLocations = @"val/wxfcs/all/json/sitelist";
 NSString *baseStation = @"val/wxfcs/all/json/";
 const NSArray *weatherTypes;
-const float maxSpeed = 20;
+const float maxSpeed = 50;
 const float meterMaxSize = 287;
+const NSArray *weatherImages;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,7 +58,7 @@ const float meterMaxSize = 287;
     temp.eventLatitude = 51.9271;
     NSDateFormatter *format = [[NSDateFormatter alloc]init];
     [format setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
-    NSDate *startDate = [format dateFromString:@"2013-12-12T21:30:00+0000"];
+    NSDate *startDate = [format dateFromString:@"2013-12-17T21:30:00+0000"];
     temp.eventStartDate = startDate;
     temp.dateFormatterStart = format;
     fbEvent = temp;
@@ -94,6 +95,15 @@ const float meterMaxSize = 287;
                     @"Thunder Shower (Night)",
                     @"Thunder Shower (Day)",
                     @"Thunder", nil];
+    weatherImages = [[NSArray alloc]initWithObjects:@"ClearNightWeather",
+                                                    @"SunnyWeather",
+                                                    @"PartlyCloudyWeather",
+                                                    @"CloudyWeather",
+                                                    @"RainWeather",
+                                                    @"HeavyRainWeather",
+                                                    @"SnowWeather",
+                                                    @"LightningWeather", nil];
+    
     
     //Do some checks to see if 5 days from event
     //Do some checks if time exists in event information
@@ -236,7 +246,7 @@ const float meterMaxSize = 287;
 
 - (void) createWeatherObject:(NSDictionary *)weather
 {
-    //NSLog([weather description]);
+    NSLog([weather description]);
     NSDictionary *locationData = [[[weather objectForKey:@"SiteRep"] objectForKey:@"DV"]objectForKey:@"Location"];
     thisWeatherEvent.baseStation = [locationData valueForKey:@"name"];
     NSDictionary *weatherContent = [[[[[weather objectForKey:@"SiteRep"] objectForKey:@"DV"]objectForKey:@"Location"]objectForKey:@"Period"]objectForKey:@"Rep"];
@@ -251,14 +261,58 @@ const float meterMaxSize = 287;
     thisWeatherEvent.eventWindGusting = [weatherContent valueForKey:@"G"];
     thisWeatherEvent.eventWindSpeed = [weatherContent valueForKey:@"S"];
     //Remove Spinner Here
-    //Start Building View
+    
+    float percentWindSpeed;
+    float percentWindGust;
     NSString *message;
+    
+    //CONDITIONING MESSAGE
     if([thisWeatherEvent.eventWindGusting floatValue] > maxSpeed)
     {
         message = @"Wind gust exceeds 20mph, contact the event supervisor for more information";
     }
-    else message = @"It seems ok to go kayaking in these conditions";
-    
+    else {
+        message = @"It seems ok to go kayaking in these conditions";
+    }
+    //CONDITIONING IMAGE
+    if (wTemp == 0 ) {
+        thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[0]];
+    }
+    else if (wTemp == 1){
+        thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[1]];
+    }
+    else if (wTemp > 1 && wTemp <= 4){
+        thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[2]];
+    }
+    else if (wTemp > 4 && wTemp <=8){
+        thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[3]];
+    }
+    else if(wTemp > 8 && wTemp <= 12){
+        thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[4]];
+    }
+    else if(wTemp > 12 && wTemp <= 15){
+        thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[5]];
+    }
+    else if(wTemp > 15 && wTemp <= 27){
+        thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[6]];
+    }
+    else{
+        thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[7]];
+    }
+    //CONDITIONING METER
+    if ([thisWeatherEvent.eventWindSpeed floatValue] <= maxSpeed) {
+        percentWindSpeed= ([thisWeatherEvent.eventWindSpeed floatValue]/maxSpeed)*meterMaxSize;
+    }
+    else{
+        percentWindSpeed = meterMaxSize;
+    }
+    if([thisWeatherEvent.eventWindGusting floatValue] <= maxSpeed){
+         percentWindGust= ([thisWeatherEvent.eventWindGusting floatValue]/maxSpeed)*meterMaxSize;
+    }
+    else{
+        percentWindGust = meterMaxSize;
+    }
+    //Start Building View
     dispatch_async(dispatch_get_main_queue(), ^{
         ///////////////////////////////////////////////////////////////////////////
         weatherActualTempLabel.text = [thisWeatherEvent.eventTemperature stringByAppendingString:@"°C"];
@@ -270,10 +324,8 @@ const float meterMaxSize = 287;
         WindDirectionLabel.text = thisWeatherEvent.eventWindDirection;
         WarningMessages.text = message;
         baseStationLabel.text = thisWeatherEvent.baseStation;
-        
+        weatherBackgroundImage.image = thisWeatherEvent.eventWeatherImage;
         //calc bar percentage
-        float percentWindSpeed = ([thisWeatherEvent.eventWindSpeed floatValue]/maxSpeed)*meterMaxSize;
-        float percentWindGust = ([thisWeatherEvent.eventWindGusting floatValue]/maxSpeed)*meterMaxSize;
         
         windSpeedMeter.layer.anchorPoint = CGPointMake(0.0, 0.5);
         CABasicAnimation *windSpeedAnimation;
@@ -294,8 +346,33 @@ const float meterMaxSize = 287;
         windGustAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
         [windGustingMeter.layer addAnimation:windGustAnimation forKey:@"position"];
         windGustingMeter.frame = CGRectMake(windGustingMeter.frame.origin.x, windGustingMeter.frame.origin.y, percentWindGust, 30);
-        ///////////////////////////////////////////////////////////////////////
         
+        CABasicAnimation *windSpeedLabelAnimation;
+        windGustAnimation = [CABasicAnimation animationWithKeyPath:@"transform.position.x"];
+        windGustAnimation.fromValue = [NSNumber numberWithFloat:0.1f];
+        windGustAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+        windGustAnimation.duration = 1.0;
+        windGustAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        [windSpeedLabel.layer addAnimation:windSpeedLabelAnimation forKey:@"position"];
+        [windSpeedLabel setFrame:CGRectMake(percentWindSpeed - 25, windSpeedLabel.frame.origin.y, 20, 20)];
+        CABasicAnimation *windGustLabelAnimation;
+        windGustAnimation = [CABasicAnimation animationWithKeyPath:@"transform.position.x"];
+        windGustAnimation.fromValue = [NSNumber numberWithFloat:0.1f];
+        windGustAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+        windGustAnimation.duration = 1.0;
+        windGustAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        [WindGustingLabel.layer addAnimation:windGustLabelAnimation forKey:@"position"];
+        [WindGustingLabel setFrame:CGRectMake(percentWindGust - 25, WindGustingLabel.frame.origin.y, 20, 20)];
+        
+        CABasicAnimation *weatherBackgroundAnimation;
+        windGustAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        windGustAnimation.fromValue = [NSNumber numberWithFloat:0.1f];
+        windGustAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+        windGustAnimation.duration = 1.0;
+        windGustAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        [weatherBackgroundImage.layer addAnimation:windGustAnimation forKey:@"alpha"];
+        [weatherBackgroundImage setAlpha:1];
+        ///////////////////////////////////////////////////////////////////////
     });
 }
 - (void)didReceiveMemoryWarning

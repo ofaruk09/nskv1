@@ -164,7 +164,6 @@ UIActivityIndicatorView *loadingIndicator;
     __block BOOL userLoggedIn = false;
     EventsList = [[NSMutableArray alloc]init];
     if (FBSession.activeSession.isOpen) {
-        // login is integrated with the send button -- so if open, we send
         userLoggedIn = true;
     } else {
         [FBSession openActiveSessionWithReadPermissions:nil
@@ -184,7 +183,8 @@ UIActivityIndicatorView *loadingIndicator;
                                               // to the FB_ISSESSIONOPENWITHSTATE helper-macro would be to check the isOpen
                                               // property of the session object; the macros are useful, however, for more
                                               // detailed state checking for FBSession objects
-                                          } else if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                          }
+                                          if (FB_ISSESSIONOPENWITHSTATE(status)) {
                                               // send our requests if we successfully logged in
                                               NSLog(@"user logged in");
                                               userLoggedIn = true;
