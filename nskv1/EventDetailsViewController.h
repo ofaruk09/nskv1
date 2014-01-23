@@ -10,8 +10,10 @@
 #import "FacebookEvent.h"
 #import "EventImageCell.h"
 #import "WeatherViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface EventDetailsViewController : UITableViewController
-@property (strong, nonatomic) IBOutlet UIImageView *eventImageView;
+@property (strong, nonatomic) IBOutlet UINavigationItem *ViewController;
+- (IBAction)PinEvent:(id)sender;
 @property FacebookEvent *fbEvent;
 @end

@@ -11,6 +11,7 @@
 		2E3332D018513A9C005A4ECF /* WeatherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332CF18513A9C005A4ECF /* WeatherViewController.m */; };
 		2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332D818552588005A4ECF /* WeatherEvent.m */; };
 		2E41A01B185B8FCD00CDF189 /* dateTimePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E41A01A185B8FCD00CDF189 /* dateTimePickerViewController.m */; };
+		2E41A01E185D234500CDF189 /* pinnedEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E41A01D185D234500CDF189 /* pinnedEventsViewController.m */; };
 		2EBCA6C7184F776300B4156E /* EventDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */; };
 		2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EBCA6C9184F7E9600B4156E /* EventImageCell.m */; };
 		2EDB52771842E1C100A58733 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52761842E1C100A58733 /* Foundation.framework */; };
@@ -51,6 +52,8 @@
 		2E3332D818552588005A4ECF /* WeatherEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherEvent.m; sourceTree = "<group>"; };
 		2E41A019185B8FCD00CDF189 /* dateTimePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dateTimePickerViewController.h; sourceTree = "<group>"; };
 		2E41A01A185B8FCD00CDF189 /* dateTimePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dateTimePickerViewController.m; sourceTree = "<group>"; };
+		2E41A01C185D234500CDF189 /* pinnedEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pinnedEventsViewController.h; sourceTree = "<group>"; };
+		2E41A01D185D234500CDF189 /* pinnedEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pinnedEventsViewController.m; sourceTree = "<group>"; };
 		2EBCA6C5184F776300B4156E /* EventDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailsViewController.h; sourceTree = "<group>"; };
 		2EBCA6C6184F776300B4156E /* EventDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailsViewController.m; sourceTree = "<group>"; };
 		2EBCA6C8184F7E9600B4156E /* EventImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventImageCell.h; sourceTree = "<group>"; };
@@ -167,6 +170,8 @@
 				2EF8599C185B77C7007A6B5C /* VenueFinderViewController.m */,
 				2E41A019185B8FCD00CDF189 /* dateTimePickerViewController.h */,
 				2E41A01A185B8FCD00CDF189 /* dateTimePickerViewController.m */,
+				2E41A01C185D234500CDF189 /* pinnedEventsViewController.h */,
+				2E41A01D185D234500CDF189 /* pinnedEventsViewController.m */,
 			);
 			path = nskv1;
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */,
+				2E41A01E185D234500CDF189 /* pinnedEventsViewController.m in Sources */,
 				2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */,
 				2EDB52B91842ED3900A58733 /* EventsViewController.m in Sources */,
 				2EBCA6C7184F776300B4156E /* EventDetailsViewController.m in Sources */,

@@ -21,4 +21,5 @@
 @synthesize eventEndDate;
 @synthesize dateFormatterStart;
 @synthesize dateFormatterEnd;
+@synthesize eventAttending;
 @end

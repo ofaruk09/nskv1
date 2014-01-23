@@ -15,20 +15,8 @@
 #import "EventDetailsViewController.h"
 
 @interface EventsViewController : UITableViewController
-
-@property (strong, nonatomic) FBRequestConnection *requestConnection;
 @property NSMutableArray *EventsList;
 
-- (void)sendRequests:(NSString *)fbID;
-
-- (void)requestCompleted:(FBRequestConnection *)connection
-                  result:(id)result
-                   error:(NSError *)error;
-
-- (BOOL)openFacebookSession;
-
-- (void)downloadEvents;
-
-- (void)triggerRefresh;
+- (void) refreshView:(NSNotification *) notification;
 
 @end

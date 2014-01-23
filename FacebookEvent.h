@@ -22,6 +22,7 @@
 @property UIImage * eventImage;
 @property NSDateFormatter *dateFormatterStart;
 @property NSDateFormatter *dateFormatterEnd;
+@property bool eventAttending;
 
 
 @end

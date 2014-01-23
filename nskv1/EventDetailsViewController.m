@@ -14,7 +14,6 @@
 
 @implementation EventDetailsViewController
 @synthesize fbEvent;
-@synthesize eventImageView;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -23,6 +22,26 @@
         // Custom initialization
     }
     return self;
+}
+- (IBAction)PinEvent:(id)sender
+{
+    if ([FBSession.activeSession.permissions indexOfObject:@"rsvp_event"] == NSNotFound) {
+        // if we don't already have the permission, then we request it now
+        NSLog(@"requesting permission");
+    }
+    else{
+        NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/attending"];
+        NSLog(@"Event Pinned");
+        [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            if(error){
+                NSLog([error description]);
+            }
+            else{
+                NSLog(@"successful");
+            }
+        }];
+    }
+    
 }
 
 - (void)viewDidLoad
@@ -33,6 +52,7 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSLog(fbEvent.eventID);
 }
 
 - (void)didReceiveMemoryWarning
@@ -187,26 +207,24 @@
  */
 
 
- #pragma mark - Navigation
- 
- // In a story board-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
-     if([[segue identifier] isEqualToString:@"showWeatherForEvent"]){
-         // check if within 5 days of event day
-         double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
-         timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
-         
-         //if(timeToEvent <= 5.0f){
-             WeatherViewController *wvController = segue.destinationViewController;
-             wvController.fbEvent = fbEvent;
-             wvController.timeToEvent = timeToEvent;
-         //}
-         //else{
-             //show message to show no wether data beyond 5 days!
-         //}
-     }
- }
- 
+#pragma mark - Navigation
 
+// In a story board-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([[segue identifier] isEqualToString:@"showWeatherForEvent"]){
+        // check if within 5 days of event day
+        double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
+        timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
+        
+        //if(timeToEvent <= 5.0f){
+        WeatherViewController *wvController = segue.destinationViewController;
+        wvController.fbEvent = fbEvent;
+        wvController.timeToEvent = timeToEvent;
+        //}
+        //else{
+        //show message to show no wether data beyond 5 days!
+        //}
+    }
+}
 @end
