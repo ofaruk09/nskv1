@@ -31,14 +31,18 @@
                                              selector:@selector(refreshView:)
                                                  name:@"refreshPinnedList"
                                                object:nil];
-    PinnedEvents = [AppDelegate getPinnedList];
     NSLog(@"%i",PinnedEvents.count);
-    [self.tableView reloadData];
+    [self refreshView];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"view did appear");
+    [self refreshView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,8 +135,11 @@
 
 -(void)refreshView
 {
-    PinnedEvents = [AppDelegate getPinnedList];
-    [self.tableView reloadData];
+    PinnedEvents = [FacebookEvent getPinnedList];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    
 }
 
 @end

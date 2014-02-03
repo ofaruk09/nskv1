@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="8YX-ce-x5E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="8YX-ce-x5E">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -18,7 +18,7 @@
                     <connections>
                         <segue destination="F8A-VA-lZ3" kind="relationship" relationship="viewControllers" id="IwQ-LR-4j5"/>
                         <segue destination="zPC-ww-HG5" kind="relationship" relationship="viewControllers" id="oR4-pw-1C4"/>
-                        <segue destination="DeD-Ir-YBd" kind="relationship" relationship="viewControllers" id="n7N-pg-KEA"/>
+                        <segue destination="l3I-d3-ysq" kind="relationship" relationship="viewControllers" id="RjE-uE-YoK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNP-y4-bzi" sceneMemberID="firstResponder"/>
@@ -121,15 +121,10 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="rqk-VV-aPT">
-                                            <rect key="frame" x="240" y="7" width="47" height="15"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="eventDesc" destination="thU-aL-wHm" id="X1L-dl-yVZ"/>
-                                    <outlet property="eventMode" destination="rqk-VV-aPT" id="IlI-im-zog"/>
                                     <outlet property="eventName" destination="xq1-7X-tNy" id="BLf-8w-GKd"/>
                                     <outlet property="eventThumb" destination="8Iw-kj-hcA" id="5ia-xd-R8e"/>
                                     <segue destination="zwj-zx-fFn" kind="push" identifier="eventDetails" id="hfk-XA-sq2"/>
@@ -232,6 +227,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="pinButton" destination="sK6-Rn-7ws" id="GAi-5O-y9G"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6nh-6S-tSO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -526,20 +524,23 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             <point key="canvasLocation" x="1175" y="1195"/>
         </scene>
         <!--Navigation Controller - Pinned Events-->
-        <scene sceneID="7Z1-AH-W7n">
+        <scene sceneID="U07-bU-Zm1">
             <objects>
-                <navigationController definesPresentationContext="YES" id="DeD-Ir-YBd" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Pinned Events" id="bN5-RL-NKt"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="waH-Uc-lry">
+                <navigationController title="Pinned Events" definesPresentationContext="YES" id="l3I-d3-ysq" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Pinned Events" id="lxy-pt-6ID"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="ZbE-zi-Dra">
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
-                        <segue destination="BUT-eb-4BO" kind="relationship" relationship="rootViewController" id="eWS-GL-CUe"/>
+                        <segue destination="BUT-eb-4BO" kind="relationship" relationship="rootViewController" id="3Es-o6-SGT"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cH4-aZ-O8Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="POo-1L-EE0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="659" y="1195"/>
+            <point key="canvasLocation" x="667" y="1195"/>
         </scene>
         <!--Navigation Controller - Events-->
         <scene sceneID="Z0c-Yf-wnE">
@@ -547,7 +548,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="F8A-VA-lZ3" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Events" id="mGo-Fe-dDz"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Events" id="75J-nY-gWW"/>
+                    <navigationItem key="navigationItem" id="75J-nY-gWW"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="Mhi-3U-oog">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -570,13 +571,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="crossHairs" width="40" height="40"/>
         <image name="getDataIcon" width="50" height="50"/>
     </resources>
+    <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="xrm-iT-j6v"/>
+        <segue reference="hfk-XA-sq2"/>
         <segue reference="Kek-ki-2e8"/>
     </inferredMetricsTieBreakers>
 </document>

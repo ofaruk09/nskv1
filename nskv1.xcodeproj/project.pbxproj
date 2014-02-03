@@ -21,11 +21,6 @@
 		2EDB52831842E1C100A58733 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52821842E1C100A58733 /* main.m */; };
 		2EDB52871842E1C100A58733 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52861842E1C100A58733 /* AppDelegate.m */; };
 		2EDB528A1842E1C100A58733 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EDB52881842E1C100A58733 /* Main.storyboard */; };
-		2EDB52991842E1C100A58733 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52981842E1C100A58733 /* XCTest.framework */; };
-		2EDB529A1842E1C100A58733 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52761842E1C100A58733 /* Foundation.framework */; };
-		2EDB529B1842E1C100A58733 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB527A1842E1C100A58733 /* UIKit.framework */; };
-		2EDB52A31842E1C100A58733 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2EDB52A11842E1C100A58733 /* InfoPlist.strings */; };
-		2EDB52A51842E1C100A58733 /* nskv1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52A41842E1C100A58733 /* nskv1Tests.m */; };
 		2EDB52B31842E67700A58733 /* EventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52B21842E67700A58733 /* EventsCell.m */; };
 		2EDB52B91842ED3900A58733 /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52B81842ED3900A58733 /* EventsViewController.m */; };
 		2EDB52BB1845223D00A58733 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52BA1845223D00A58733 /* FacebookSDK.framework */; };
@@ -33,16 +28,6 @@
 		2EF26683185A3DF5009D2480 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EF26682185A3DF5009D2480 /* Images.xcassets */; };
 		2EF8599D185B77C7007A6B5C /* VenueFinderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EF8599C185B77C7007A6B5C /* VenueFinderViewController.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		2EDB529C1842E1C100A58733 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2EDB526B1842E1C100A58733 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2EDB52721842E1C100A58733;
-			remoteInfo = nskv1;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2E07C9FC18464FB100612722 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -69,7 +54,6 @@
 		2EDB52851842E1C100A58733 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2EDB52861842E1C100A58733 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2EDB52891842E1C100A58733 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		2EDB52971842E1C100A58733 /* nskv1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = nskv1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EDB52981842E1C100A58733 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		2EDB52A01842E1C100A58733 /* nskv1Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "nskv1Tests-Info.plist"; sourceTree = "<group>"; };
 		2EDB52A21842E1C100A58733 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -99,16 +83,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2EDB52941842E1C100A58733 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2EDB52991842E1C100A58733 /* XCTest.framework in Frameworks */,
-				2EDB529B1842E1C100A58733 /* UIKit.framework in Frameworks */,
-				2EDB529A1842E1C100A58733 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -126,7 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				2EDB52731842E1C100A58733 /* nskv1.app */,
-				2EDB52971842E1C100A58733 /* nskv1Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -225,24 +198,6 @@
 			productReference = 2EDB52731842E1C100A58733 /* nskv1.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2EDB52961842E1C100A58733 /* nskv1Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 2EDB52AB1842E1C100A58733 /* Build configuration list for PBXNativeTarget "nskv1Tests" */;
-			buildPhases = (
-				2EDB52931842E1C100A58733 /* Sources */,
-				2EDB52941842E1C100A58733 /* Frameworks */,
-				2EDB52951842E1C100A58733 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				2EDB529D1842E1C100A58733 /* PBXTargetDependency */,
-			);
-			name = nskv1Tests;
-			productName = nskv1Tests;
-			productReference = 2EDB52971842E1C100A58733 /* nskv1Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -252,8 +207,8 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Omorr Faruk";
 				TargetAttributes = {
-					2EDB52961842E1C100A58733 = {
-						TestTargetID = 2EDB52721842E1C100A58733;
+					2EDB52721842E1C100A58733 = {
+						DevelopmentTeam = 679D3DL4GB;
 					};
 				};
 			};
@@ -271,7 +226,6 @@
 			projectRoot = "";
 			targets = (
 				2EDB52721842E1C100A58733 /* nskv1 */,
-				2EDB52961842E1C100A58733 /* nskv1Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -284,14 +238,6 @@
 				2EF26683185A3DF5009D2480 /* Images.xcassets in Resources */,
 				2EDB52811842E1C100A58733 /* InfoPlist.strings in Resources */,
 				2EDB528A1842E1C100A58733 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		2EDB52951842E1C100A58733 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2EDB52A31842E1C100A58733 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,23 +263,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2EDB52931842E1C100A58733 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2EDB52A51842E1C100A58733 /* nskv1Tests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		2EDB529D1842E1C100A58733 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2EDB52721842E1C100A58733 /* nskv1 */;
-			targetProxy = 2EDB529C1842E1C100A58733 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2EDB527F1842E1C100A58733 /* InfoPlist.strings */ = {
@@ -440,6 +370,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/Omorr/Documents/FacebookSDK,
@@ -447,7 +379,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nskv1/nskv1-Prefix.pch";
 				INFOPLIST_FILE = "nskv1/nskv1-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "25D8126D-83CA-4FAE-AFA7-96C4F5DE0CFF";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -457,6 +392,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/Omorr/Documents/FacebookSDK,
@@ -464,50 +401,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nskv1/nskv1-Prefix.pch";
 				INFOPLIST_FILE = "nskv1/nskv1-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "25D8126D-83CA-4FAE-AFA7-96C4F5DE0CFF";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		2EDB52AC1842E1C100A58733 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/nskv1.app/nskv1";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "nskv1/nskv1-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "nskv1Tests/nskv1Tests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		2EDB52AD1842E1C100A58733 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/nskv1.app/nskv1";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "nskv1/nskv1-Prefix.pch";
-				INFOPLIST_FILE = "nskv1Tests/nskv1Tests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -528,15 +426,6 @@
 			buildConfigurations = (
 				2EDB52A91842E1C100A58733 /* Debug */,
 				2EDB52AA1842E1C100A58733 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2EDB52AB1842E1C100A58733 /* Build configuration list for PBXNativeTarget "nskv1Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2EDB52AC1842E1C100A58733 /* Debug */,
-				2EDB52AD1842E1C100A58733 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

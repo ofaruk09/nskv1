@@ -33,6 +33,8 @@ UIActivityIndicatorView *loadingIndicator;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    FacebookEvent *ev = [FacebookEvent getFacebookSingleton];
+    [ev beginFacebookSession];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshView:)
                                                  name:@"refreshEventList"
@@ -43,6 +45,7 @@ UIActivityIndicatorView *loadingIndicator;
     [self.view addSubview: loadingIndicator];
     
     [loadingIndicator startAnimating];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -146,12 +149,12 @@ UIActivityIndicatorView *loadingIndicator;
 
 - (void)refreshView:(NSNotification *)notification
 {
-    NSLog(@"should show here");
-    EventsList = [AppDelegate getEventsList];
-    [self.tableView reloadData];
-    [loadingIndicator stopAnimating];
-    [loadingIndicator removeFromSuperview];
-    NSLog(@"done refreshing");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        EventsList = [FacebookEvent getEventsList];
+        [self.tableView reloadData];
+        [loadingIndicator stopAnimating];
+        [loadingIndicator removeFromSuperview];
+    });
 }
 
 @end

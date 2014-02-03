@@ -12,6 +12,5 @@
 @property (strong, nonatomic) IBOutlet UILabel *eventName;
 @property (strong, nonatomic) IBOutlet UILabel *eventDesc;
 @property (strong, nonatomic) IBOutlet UIImageView *eventThumb;
-@property (strong, nonatomic) IBOutlet UIImageView *eventMode;
 
 @end

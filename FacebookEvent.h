@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 @interface FacebookEvent : NSObject
 
@@ -23,6 +24,13 @@
 @property NSDateFormatter *dateFormatterStart;
 @property NSDateFormatter *dateFormatterEnd;
 @property bool eventAttending;
+@property (strong, nonatomic) FBRequestConnection *requestConnection;
+@property NSString *userID;
+
++ (NSMutableArray *) getEventsList;
++ (NSMutableArray *) getPinnedList;
++ (id)getFacebookSingleton;
+- (void)beginFacebookSession;
 
 
 @end

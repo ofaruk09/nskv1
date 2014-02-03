@@ -12,7 +12,6 @@
 @synthesize eventName;
 @synthesize eventDesc;
 @synthesize eventThumb;
-@synthesize eventMode;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

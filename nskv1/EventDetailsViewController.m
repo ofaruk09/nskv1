@@ -7,6 +7,7 @@
 //
 
 #import "EventDetailsViewController.h"
+#import "AppDelegate.h"
 
 @interface EventDetailsViewController ()
 
@@ -14,6 +15,7 @@
 
 @implementation EventDetailsViewController
 @synthesize fbEvent;
+@synthesize pinButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,16 +32,36 @@
         NSLog(@"requesting permission");
     }
     else{
-        NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/attending"];
-        NSLog(@"Event Pinned");
-        [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-            if(error){
-                NSLog([error description]);
-            }
-            else{
-                NSLog(@"successful");
-            }
-        }];
+        if(fbEvent.eventAttending){
+            fbEvent.eventAttending = false;
+            [self changePinLabel];
+            NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/declined"];
+            NSLog(@"Event Unpinned");
+            [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if(error){
+                    NSLog([error description]);
+                }
+                else{
+                    NSLog(@"successful");
+                    [[FacebookEvent getPinnedList] removeObject:fbEvent];
+                }
+            }];
+        }
+        else{
+            fbEvent.eventAttending = true;
+            [self changePinLabel];
+            NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/attending"];
+            NSLog(@"Event Pinned");
+            [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                if(error){
+                    NSLog([error description]);
+                }
+                else{
+                    NSLog(@"successful");
+                    [[FacebookEvent getPinnedList] addObject:fbEvent];
+                }
+            }];
+        }
     }
     
 }
@@ -53,6 +75,17 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     NSLog(fbEvent.eventID);
+    [self changePinLabel];
+}
+
+-(void)changePinLabel
+{
+    if(fbEvent.eventAttending){
+        pinButton.title = @"Unpin";
+    }
+    else{
+        pinButton.title = @"Pin";
+    }
 }
 
 - (void)didReceiveMemoryWarning
