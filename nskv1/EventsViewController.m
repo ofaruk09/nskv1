@@ -152,8 +152,10 @@ UIActivityIndicatorView *loadingIndicator;
     dispatch_async(dispatch_get_main_queue(), ^{
         EventsList = [FacebookEvent getEventsList];
         [self.tableView reloadData];
-        [loadingIndicator stopAnimating];
-        [loadingIndicator removeFromSuperview];
+        if(loadingIndicator != nil){
+            [loadingIndicator stopAnimating];
+            [loadingIndicator removeFromSuperview];
+        }
     });
 }
 

@@ -251,7 +251,7 @@
         timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
         
         //if(timeToEvent <= 5.0f){
-        WeatherViewController *wvController = segue.destinationViewController;
+        WeatherTidesViewController *wvController = segue.destinationViewController;
         wvController.fbEvent = fbEvent;
         wvController.timeToEvent = timeToEvent;
         //}

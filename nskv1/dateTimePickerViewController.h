@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FacebookEvent.h"
-#import "WeatherViewController.h"
+#import "WeatherTidesViewController.h"
 
 @interface dateTimePickerViewController : UIViewController
 @property FacebookEvent *fbEvent;

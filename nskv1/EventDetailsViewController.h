@@ -10,6 +10,7 @@
 #import "FacebookEvent.h"
 #import "EventImageCell.h"
 #import "WeatherViewController.h"
+#import "WeatherTidesViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface EventDetailsViewController : UITableViewController

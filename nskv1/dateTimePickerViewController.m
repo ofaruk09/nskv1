@@ -46,7 +46,7 @@
 {
     if([[segue identifier] isEqualToString:@"datePicker"]){
         fbEvent.eventStartDate = [dateAndTimePicker date];
-        WeatherViewController *contr = segue.destinationViewController;
+        WeatherTidesViewController *contr = segue.destinationViewController;
         contr.fbEvent = fbEvent;
     }
 }

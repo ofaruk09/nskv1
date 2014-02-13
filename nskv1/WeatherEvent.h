@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FacebookEvent.h"
 
 @interface WeatherEvent : NSObject
 @property NSString * eventTemperature;
@@ -18,5 +19,16 @@
 @property NSString * eventVisibility;
 @property NSString * eventFeelsLikeTemperature;
 @property NSString * baseStation;
+@property NSString * userMessage;
 @property UIImage *eventWeatherImage;
+@property float percentageOfMaxWindSpeedWind;
+@property float percentageOfMaxWindSpeedGust;
+extern float const MAX_WIND_SPEED;
+extern int const WEATHER_TOTAL_STEPS;
+
++ (NSArray*) weatherTypes;
+- (void) downloadWeatherDataWithLocation:(CLLocation *)thisLocation
+                        forFacebookEvent:(FacebookEvent *)fbEvent;
+- (id)initWithLocation:(CLLocation *)thisLocation
+      forFacebookEvent:(FacebookEvent *)fbEvent;
 @end
