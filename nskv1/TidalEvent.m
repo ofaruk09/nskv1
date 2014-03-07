@@ -44,6 +44,10 @@ int const TIDE_TOTAL_STEPS = 4;
     NSOperationQueue *queue = [[NSOperationQueue alloc]init];
     
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if(connectionError)
+        {
+            [self notifyForError:@"Cannot access the internet"];
+        }
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
                                                              options:kNilOptions
                                                                error: &connectionError];
@@ -60,12 +64,11 @@ int const TIDE_TOTAL_STEPS = 4;
     double savedDistance = DBL_MAX;
     for (int i = 0; i < [dict count]; i++) {
         NSDictionary *dictStation = [dict objectAtIndex:i];
-        CLLocation *currentStation = [[CLLocation alloc]initWithLatitude:[[dictStation valueForKey:@"Latitude"] doubleValue] longitude:[[dictStation valueForKey:@"Longitude"] doubleValue]];
-        //NSLog(@"%f",savedDistance);
+        CLLocation *currentStation = [[CLLocation alloc]initWithLatitude:[[dictStation valueForKey:@"Longitude"] doubleValue] longitude:[[dictStation valueForKey:@"Latitude"] doubleValue]];
         double currentDistance = [myLocation distanceFromLocation:currentStation];
         if(savedDistance > currentDistance){
             savedDistance = currentDistance;
-            closestStationID = [dictStation valueForKey:@"portID"];
+            closestStationID = [dictStation valueForKey:@"portID"];;
             baseStation = [dictStation valueForKey:@"portName"];
         }
     }
@@ -87,6 +90,10 @@ int const TIDE_TOTAL_STEPS = 4;
     NSOperationQueue *queue = [[NSOperationQueue alloc]init];
     
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if(connectionError)
+        {
+            [self notifyForError:@"Cannot access the internet"];
+        }
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
                                                              options:kNilOptions
                                                                error: &connectionError];

@@ -49,6 +49,7 @@
         FacebookEvent *tempEvent = [[FacebookEvent alloc]init];
         tempEvent.eventLongitude = position.longitude;
         tempEvent.eventLatitude = position.latitude;
+        NSLog(@"event location: %f , %f",tempEvent.eventLongitude,tempEvent.eventLatitude);
         
         dateTimePickerViewController *contr = segue.destinationViewController;
         contr.fbEvent = tempEvent;

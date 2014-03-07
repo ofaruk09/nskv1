@@ -7,6 +7,7 @@
 //
 
 #import "WeatherTidesViewController.h"
+#include <Quartzcore/Quartzcore.h>
 
 @interface WeatherTidesViewController ()
 
@@ -22,6 +23,7 @@ const NSArray *weatherImages;
 bool downloadsComplete;
 int stepsTotal;
 int stepsCompleted;
+bool noProblemsDownloading = true;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -42,6 +44,7 @@ int stepsCompleted;
     progressBar = [[UIProgressView alloc]initWithFrame:rect];
     progressBar.progress = 0.0f;
     [self.view addSubview: progressBar];
+    noProblemsDownloading = true;
     //TEMPORARY VALUES TO SIMULATE A REAL FACEBOOK EVENT
     //---------------------------------------------------
     
@@ -50,15 +53,16 @@ int stepsCompleted;
     temp.eventLatitude = 51.9271;
     NSDateFormatter *format = [[NSDateFormatter alloc]init];
     [format setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
-    NSDate *startDate = [format dateFromString:@"2014-02-14T21:30:00+0000"];
+    NSDate *startDate = [format dateFromString:@"2014-03-09T21:30:00+0000"];
     temp.eventStartDate = startDate;
     temp.dateFormatterStart = format;
-    fbEvent = temp;
-    timeToEvent = 4.96;
+    //fbEvent = temp;
+    //timeToEvent = 4.96;
+    NSLog(@"Reported date: %@", fbEvent.eventStartDate);
     
     //---------------------------------------------------
     
-    weatherImages = [[NSArray alloc]initWithObjects:@"ClearNightWeather",
+    weatherImages = [[NSArray alloc]initWithObjects:@"NightWeather",
                      @"SunnyWeather",
                      @"PartlyCloudyWeather",
                      @"CloudyWeather",
@@ -91,6 +95,7 @@ int stepsCompleted;
 
 - (void) determineVenueLocation
 {
+    NSLog(@"event location: %f , %f",fbEvent.eventLongitude,fbEvent.eventLatitude);
     CLGeocoder *geocoder = [[CLGeocoder alloc]init];
     if(fbEvent.eventLongitude != 0 && fbEvent.eventLatitude != 0){
         // we have the long/lat we can find the closest base station
@@ -130,7 +135,7 @@ int stepsCompleted;
         progressBar.progress = progress;
     });
     
-    if(stepsCompleted == stepsTotal){
+    if(stepsCompleted == stepsTotal && noProblemsDownloading){
         downloadsComplete = true;
         NSLog(@"downloads complete");
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -143,8 +148,13 @@ int stepsCompleted;
 
 -(void)errorReceived:(NSNotification*)notification
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Something went wrong..." message:notification.object delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
-    [alert show];
+    if(noProblemsDownloading){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            noProblemsDownloading = false;
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Something went wrong..." message:notification.object delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+            [alert show];
+        });
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -191,6 +201,8 @@ int stepsCompleted;
         weatherCell.WeatherFeelsLikeTemperature.text = [thisWeatherEvent.eventFeelsLikeTemperature stringByAppendingString:@"°C"];
         weatherCell.WeatherTypeLabel.text = thisWeatherEvent.eventWeatherType;
         weatherCell.WeatherVisibilityLabel.text = thisWeatherEvent.eventVisibility;
+        [self makeTextGlow:weatherCell.WeatherTypeLabel];
+        [self makeTextGlow:weatherCell.WeatherVisibilityLabel];
         weatherCell.WeatherImage.image = thisWeatherEvent.eventWeatherImage;
         [weatherCell animateImage];
         return weatherCell;
@@ -205,7 +217,7 @@ int stepsCompleted;
         meterCell = [tableView dequeueReusableCellWithIdentifier:meterCellIdentifier forIndexPath:indexPath];
         meterCell.Value.text = thisWeatherEvent.eventWindSpeed;
         meterCell.percentageOfMeter = thisWeatherEvent.percentageOfMaxWindSpeedWind;
-        meterCell.MeterTypeLabel.text = @"Wind Speed (Mph): ";
+        meterCell.MeterTypeLabel.text = @"Wind Speed (kt): ";
         meterCell.optionalLabel.text = @"";
         [meterCell animateMeter];
         return meterCell;
@@ -216,7 +228,7 @@ int stepsCompleted;
         meterCell = [tableView dequeueReusableCellWithIdentifier:meterCellIdentifier forIndexPath:indexPath];
         meterCell.Value.text = thisWeatherEvent.eventWindGusting;
         meterCell.percentageOfMeter = thisWeatherEvent.percentageOfMaxWindSpeedGust;
-        meterCell.MeterTypeLabel.text = @"Wind Gusting Speed (Mph): ";
+        meterCell.MeterTypeLabel.text = @"Wind Gusting Speed (kt): ";
         meterCell.optionalLabel.text = @"";
         [meterCell animateMeter];
         return meterCell;
@@ -227,7 +239,7 @@ int stepsCompleted;
         meterCell = [tableView dequeueReusableCellWithIdentifier:meterCellIdentifier forIndexPath:indexPath];
         meterCell.Value.text = temp.height;
         meterCell.percentageOfMeter = temp.percentageOfMaxTideHeight;
-        meterCell.MeterTypeLabel.text = [NSString stringWithFormat:@"Tide Height at Time: %@",temp.time];
+        meterCell.MeterTypeLabel.text = [NSString stringWithFormat:@"Tide Height(m) at Time: %@",temp.time];
         meterCell.optionalLabel.text = [NSString stringWithFormat:@"%@",temp.WaterMode];
         [meterCell animateMeter];
         return meterCell;
@@ -260,7 +272,7 @@ int stepsCompleted;
 {
     if(indexPath.item == 0){
         //weather data view
-        return 159;
+        return 213;
     }
     else if (indexPath.item == 1){
         //wind direction cell
@@ -295,15 +307,25 @@ int stepsCompleted;
 - (void)findWeatherImageToUse
 {
     int wTemp = thisWeatherEvent.eventWeatherTypeValue.intValue;
+    thisWeatherEvent.eventWeatherImage = [[UIImage alloc]init];
     //CONDITIONING IMAGE
-    if (wTemp == 0 ) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:[WeatherEvent weatherTypes][0]];
-    else if (wTemp == 1) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:[WeatherEvent weatherTypes][1]];
+    if (wTemp == 0) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[0]];
+    else if (wTemp == 1) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[1]];
     else if (wTemp > 1 && wTemp <= 4) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[2]];
     else if (wTemp > 4 && wTemp <=8) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[3]];
     else if(wTemp > 8 && wTemp <= 12) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[4]];
     else if(wTemp > 12 && wTemp <= 15) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[5]];
     else if(wTemp > 15 && wTemp <= 27) thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[6]];
     else thisWeatherEvent.eventWeatherImage = [UIImage imageNamed:weatherImages[7]];
+}
+-(void) makeTextGlow:(UILabel *)yourLabel
+{
+    [[yourLabel layer] setShadowColor:[[UIColor blackColor] CGColor]];
+    [[yourLabel layer] setShadowOffset:CGSizeMake(0.0, 0.0)];
+    [[yourLabel layer] setShadowRadius:2.0f];
+    [[yourLabel layer] setShadowOpacity:0.99f];
+    [[yourLabel layer] setMasksToBounds:NO];
+    //http://benscheirman.com/2011/09/creating-a-glow-effect-for-uilabel-and-uibutton/
 }
 
 /*

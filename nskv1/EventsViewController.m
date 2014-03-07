@@ -33,8 +33,6 @@ UIActivityIndicatorView *loadingIndicator;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    FacebookEvent *ev = [FacebookEvent getFacebookSingleton];
-    [ev beginFacebookSession];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshView:)
                                                  name:@"refreshEventList"
@@ -85,6 +83,8 @@ UIActivityIndicatorView *loadingIndicator;
     FacebookEvent *model = (FacebookEvent *)[EventsList objectAtIndex:indexPath.row];
     cell.eventName.text = model.eventName;
     cell.eventDesc.text = model.eventDescription;
+    [cell.eventThumb setContentMode:UIViewContentModeScaleAspectFill];
+    [cell.eventThumb setClipsToBounds:YES];
     cell.eventThumb.image = model.eventImage;
     //cell.eventName.text = @"This is a test name";
     //cell.eventDesc.text = @"This is a test description";

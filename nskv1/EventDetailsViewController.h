@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "FacebookEvent.h"
 #import "EventImageCell.h"
-#import "WeatherViewController.h"
 #import "WeatherTidesViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -17,5 +16,6 @@
 @property (strong, nonatomic) IBOutlet UINavigationItem *ViewController;
 - (IBAction)PinEvent:(id)sender;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *pinButton;
+@property (strong, nonatomic) IBOutlet UIButton *weatherConditionsButton;
 @property FacebookEvent *fbEvent;
 @end

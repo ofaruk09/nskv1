@@ -28,7 +28,7 @@
 {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(refreshView:)
+                                             selector:@selector(refreshView)
                                                  name:@"refreshPinnedList"
                                                object:nil];
     NSLog(@"%i",PinnedEvents.count);
@@ -43,6 +43,7 @@
 {
     NSLog(@"view did appear");
     [self refreshView];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,15 +67,38 @@
     // Return the number of rows in the section.
     return [PinnedEvents count];
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 80;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     FacebookEvent *model = (FacebookEvent *)[PinnedEvents objectAtIndex:indexPath.row];
-    UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = model.eventName;
-    cell.detailTextLabel.text = model.eventDescription;
+    EventsCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    cell.eventName.text = model.eventName;
+    cell.eventDesc.text = model.eventDescription;
+    [cell.eventThumb setContentMode:UIViewContentModeScaleAspectFill];
+    [cell.eventThumb setClipsToBounds:YES];
+    cell.eventThumb.image = model.eventImage;
+    if([self eventIsFlagged:model]){
+        NSLog(@"changing status");
+        [cell.eventStatusIcon setHidden:false];
+    }
     return cell;
+}
+-(bool)eventIsFlagged:(FacebookEvent*) event
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *newPrefs = [defaults objectForKey:@"FacebookEventChanged"];
+    NSArray *currentFlaggedEvents = [newPrefs componentsSeparatedByString:@","];
+    for (NSString *str in currentFlaggedEvents) {
+        if([str isEqualToString:event.eventID]){
+            NSLog(@"This event has been flagged");
+            return true;
+        }
+    }
+    return false;
 }
 
 
@@ -126,10 +150,28 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     if([[segue identifier] isEqualToString:@"eventDetails"]){
+        EventsCell *cell =(EventsCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+        [cell.eventStatusIcon setHidden:true];
+        [self removeFlagForEvent:[PinnedEvents objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
         EventDetailsViewController *eventdet = segue.destinationViewController;
         eventdet.fbEvent = [PinnedEvents objectAtIndex:[self.tableView indexPathForSelectedRow].row];
-        
     }
+}
+
+- (void)removeFlagForEvent:(FacebookEvent *)event
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *newPrefs = [defaults objectForKey:@"FacebookEventChanged"];
+    NSArray *currentFlaggedEvents = [newPrefs componentsSeparatedByString:@","];
+    [defaults removeObjectForKey:@"FacebookEventChanged"];
+    NSString *newDefaultValue;
+    for (NSString *str in currentFlaggedEvents) {
+        NSLog(@"%@ - %@",str, event.eventID);
+        if(![str isEqualToString:event.eventID]){
+           newDefaultValue = [newDefaultValue stringByAppendingString:[NSString stringWithFormat:@"%@,",str]];
+        }
+    }
+    [defaults setObject:newDefaultValue forKey:@"FacebookEventChanged"];
 }
 
 

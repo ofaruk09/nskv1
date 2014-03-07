@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E07C9FD18464FB100612722 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E07C9FC18464FB100612722 /* MapKit.framework */; };
+		2E27A84D18C7ED01007C1F72 /* kayakingConditionsButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E27A84C18C7ED01007C1F72 /* kayakingConditionsButtonCell.m */; };
 		2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332D818552588005A4ECF /* WeatherEvent.m */; };
 		2E41A01B185B8FCD00CDF189 /* dateTimePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E41A01A185B8FCD00CDF189 /* dateTimePickerViewController.m */; };
 		2E41A01E185D234500CDF189 /* pinnedEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E41A01D185D234500CDF189 /* pinnedEventsViewController.m */; };
@@ -34,6 +35,8 @@
 
 /* Begin PBXFileReference section */
 		2E07C9FC18464FB100612722 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		2E27A84B18C7ED01007C1F72 /* kayakingConditionsButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kayakingConditionsButtonCell.h; sourceTree = "<group>"; };
+		2E27A84C18C7ED01007C1F72 /* kayakingConditionsButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = kayakingConditionsButtonCell.m; sourceTree = "<group>"; };
 		2E3332D718552588005A4ECF /* WeatherEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherEvent.h; sourceTree = "<group>"; };
 		2E3332D818552588005A4ECF /* WeatherEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherEvent.m; sourceTree = "<group>"; };
 		2E41A019185B8FCD00CDF189 /* dateTimePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dateTimePickerViewController.h; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 				2E66757618AAF56D00686B33 /* TidalEvent.m */,
 				2E66758118AD087C00686B33 /* WeatherViewCell.h */,
 				2E66758218AD087C00686B33 /* WeatherViewCell.m */,
+				2E27A84B18C7ED01007C1F72 /* kayakingConditionsButtonCell.h */,
+				2E27A84C18C7ED01007C1F72 /* kayakingConditionsButtonCell.m */,
 			);
 			path = nskv1;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 				2EDB52C1184533C900A58733 /* FacebookEvent.m in Sources */,
 				2EDB52B31842E67700A58733 /* EventsCell.m in Sources */,
 				2E66757D18AC118000686B33 /* MeterViewCell.m in Sources */,
+				2E27A84D18C7ED01007C1F72 /* kayakingConditionsButtonCell.m in Sources */,
 				2E66757718AAF56D00686B33 /* TidalEvent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

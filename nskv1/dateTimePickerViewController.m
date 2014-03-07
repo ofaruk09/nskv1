@@ -44,11 +44,12 @@
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([[segue identifier] isEqualToString:@"datePicker"]){
-        fbEvent.eventStartDate = [dateAndTimePicker date];
-        WeatherTidesViewController *contr = segue.destinationViewController;
-        contr.fbEvent = fbEvent;
-    }
+    
+    fbEvent.eventStartDate = [dateAndTimePicker date];
+    NSLog([fbEvent.eventStartDate description]);
+    NSLog(@"event location: %f , %f",fbEvent.eventLongitude,fbEvent.eventLatitude);
+    WeatherTidesViewController *contr = segue.destinationViewController;
+    contr.fbEvent = fbEvent;
 }
 
 @end

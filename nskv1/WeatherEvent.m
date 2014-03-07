@@ -33,9 +33,10 @@ NSString *baseWeatherAddress = @"http://datapoint.metoffice.gov.uk/public/data/"
 NSString *apiKey = @"key=9a359b8e-179a-4164-8e29-dcfab50bed8a";
 NSString *allLocations = @"val/wxfcs/all/json/sitelist";
 NSString *dataFormat = @"val/wxfcs/all/json/";
-float const MAX_WIND_SPEED = 50;
+float const MAX_WIND_SPEED = 15;
 int const WEATHER_TOTAL_STEPS = 4;
 int steps = WEATHER_TOTAL_STEPS;
+const float mpHtokt = 0.868976;
 
 +(NSArray*) weatherTypes
 {
@@ -91,7 +92,7 @@ int steps = WEATHER_TOTAL_STEPS;
     __block NSDictionary * weatherData;
     NSURL *url = [NSURL URLWithString:siteList];
     NSURLRequest * request = [NSURLRequest requestWithURL:url
-                                              cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                              cachePolicy:NSURLCacheStorageAllowed
                                           timeoutInterval:30.0f];
     
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -108,20 +109,21 @@ int steps = WEATHER_TOTAL_STEPS;
              // HANDLE DATA HERE
              
              [self notifyProgressForWeather];
-             [self findWeatherDataForTimeAndPlace:thisLocation locationList:weatherData andFacebookEvent:fbEvent];
+             [self findWeatherDataForPlace:thisLocation locationList:weatherData andFacebookEvent:fbEvent];
          }
          else if([data length]  ==  0 && error == nil){
-             NSLog(@"Nothing came through");
+             [self notifyForError:@"Cannot access the internet"];
          }
          if(error != nil) {
-             [self notifyForError:@"MetOffice is currently unavailable, please try again later1"];
+             [self notifyForError:@"MetOffice is currently unavailable, please try again later"];
          }
      }];
 }
-- (void) findWeatherDataForTimeAndPlace:(CLLocation*)myLocation
+- (void) findWeatherDataForPlace:(CLLocation*)myLocation
                            locationList:(NSDictionary*)locationList
                        andFacebookEvent:(FacebookEvent*)fbEvent
 {
+    //NSLog([locationList description]);
     NSString *closestStationID;
     NSArray *dict = (NSArray*)[[locationList objectForKey:@"Locations"] objectForKey:@"Location"];
     double savedDistance = DBL_MAX;
@@ -138,12 +140,11 @@ int steps = WEATHER_TOTAL_STEPS;
     [self notifyProgressForWeather];
     //WE NOW HAVE THE CLOSEST STATION ID;
     //WE CAN REQUEST THE WEATHER INFORMATION FOR THAT PARTICULAR STATION
-    NSString *eventTimeAndDate = [fbEvent.dateFormatterStart stringFromDate:fbEvent.eventStartDate];
-    eventTimeAndDate = [[eventTimeAndDate substringWithRange:NSMakeRange(0, 19)] stringByAppendingString:@"Z"];
-    NSString * weatherSite = [[NSString alloc]initWithFormat:@"%@%@%@?time=%@&res=3hourly&%@",baseWeatherAddress,dataFormat,closestStationID,eventTimeAndDate,apiKey];
+    NSString * weatherSite = [[NSString alloc]initWithFormat:@"%@%@%@?res=3hourly&%@",baseWeatherAddress,dataFormat,closestStationID,apiKey];
+    NSLog(weatherSite);
     NSURL *url = [NSURL URLWithString:weatherSite];
     NSURLRequest * request = [NSURLRequest requestWithURL:url
-                                              cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                              cachePolicy:NSURLCacheStorageNotAllowed
                                           timeoutInterval:30.0f];
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     [NSURLConnection
@@ -157,32 +158,59 @@ int steps = WEATHER_TOTAL_STEPS;
              NSDictionary * weatherData = [NSJSONSerialization JSONObjectWithData:data
                                                            options:kNilOptions
                                                              error: &error];
+             NSLog([weatherData description]);
              [self notifyProgressForWeather];
-             [self createWeatherObject:weatherData];
+             [self createWeatherObject:weatherData withFacebookEvent:fbEvent];
          }
          else if([data length]  ==  0 && error == nil){
-             NSLog(@"Nothing came through");
+             [self notifyForError:@"Cannot access the internet"];
          }
          if(error != nil) {
-             [self notifyForError:@"MetOffice is currently unavailable, please try again later2"];
+             [self notifyForError:@"MetOffice is currently unavailable, please try again later"];
          }
      }];
 }
 - (void) createWeatherObject:(NSDictionary *)weather
+           withFacebookEvent:(FacebookEvent *)fbEvent
 {
+    //NSLog([weather description]);
     NSDictionary *locationData = [[[weather objectForKey:@"SiteRep"] objectForKey:@"DV"]objectForKey:@"Location"];
+    
     baseStation = [locationData valueForKey:@"name"];
-    NSDictionary *weatherContent = [[[[[weather objectForKey:@"SiteRep"] objectForKey:@"DV"]objectForKey:@"Location"]objectForKey:@"Period"]objectForKey:@"Rep"];
+    NSArray *weekForecast = [[[[weather objectForKey:@"SiteRep"]objectForKey:@"DV"]objectForKey:@"Location"] objectForKey:@"Period"];
+    NSDictionary *weatherContent = [self findDataForDayUsingPeriods:weekForecast andDate:fbEvent.eventStartDate];
+    
+    if(weatherContent == nil)
+    {
+        [self notifyForError:@"Weather information is currently unavailable for this location, please try again later"];
+    }
+
+    //Pull all the values here
     eventTemperature = [weatherContent valueForKey:@"T"];
     eventFeelsLikeTemperature = [weatherContent valueForKey:@"F"];
-    eventVisibility = [weatherContent valueForKey:@"V"];
-    //NSLog([weatherContent])
     NSUInteger wTemp = [[weatherContent valueForKey:@"W"] integerValue];
     eventWeatherType = [[WeatherEvent weatherTypes] objectAtIndex:wTemp];
     eventWeatherTypeValue = [NSString stringWithFormat:@"%i",wTemp];
     eventWindDirection = [weatherContent valueForKey:@"D"];
+    
+    //Conversion of mph to kt
+    
     eventWindGusting = [weatherContent valueForKey:@"G"];
+    eventWindGusting = [NSString stringWithFormat:@"%.01f",eventWindGusting.floatValue*mpHtokt];
+    
     eventWindSpeed = [weatherContent valueForKey:@"S"];
+    eventWindSpeed = [NSString stringWithFormat:@"%.01f",eventWindSpeed.floatValue*mpHtokt];
+    
+    //converting visibility label into something human readable
+    
+    eventVisibility = [weatherContent valueForKey:@"V"];
+    if([eventVisibility isEqualToString:@"UN"]) eventVisibility = @"Unknown";
+    else if([eventVisibility isEqualToString:@"VP"]) eventVisibility = @"Very Poor";
+    else if([eventVisibility isEqualToString:@"PO"]) eventVisibility = @"Poor";
+    else if([eventVisibility isEqualToString:@"MO"]) eventVisibility = @"Moderate";
+    else if([eventVisibility isEqualToString:@"GO"]) eventVisibility = @"Good";
+    else if([eventVisibility isEqualToString:@"VG"]) eventVisibility = @"Very Good";
+    else if([eventVisibility isEqualToString:@"EX"]) eventVisibility = @"Excellent";
     
     //SOLVING PERCENTAGE OF MAX WIND SPEED
     
@@ -203,14 +231,42 @@ int steps = WEATHER_TOTAL_STEPS;
     
     if([eventWindGusting floatValue] > MAX_WIND_SPEED)
     {
-        userMessage = @"Wind gust exceeds 20mph, contact the event supervisor for more information";
+        userMessage = @"Wind gust exceeds general guideline of 15kt";
     }
     else {
-        userMessage = @"It seems ok to go kayaking in these conditions";
+        userMessage = @"No message";
     }
-    NSLog(@"%@",[WeatherEvent weatherTypes][0]);
-    
     [self notifyProgressForWeather];
+}
+
+-(NSDictionary *)findDataForDayUsingPeriods:(NSArray *)listOfPeriods
+                                    andDate:(NSDate *)targetDate;
+{
+    //first we need to find the right day of the week so must match target date from list of periods
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit) fromDate:targetDate];
+    NSString *jsonDate = [NSString stringWithFormat:@"%04i-%02i-%02iZ",components.year,components.month,components.day];
+    //now perform the matching
+    NSArray *targetWeek = nil;
+    for (NSDictionary *dict in listOfPeriods) {
+        NSString *value = [dict valueForKey:@"value"];
+        if ([value isEqualToString:jsonDate]) {
+            targetWeek = [dict objectForKey:@"Rep"];
+        }
+    }
+    //Now we must find the matching hour
+    int hour = [components hour];
+    //round up to the hour to the nearest multiple of 3 because forecasts are 3 hourly starting at 0 then divide by 3 to get the index of the 3-hourly forecast we want
+    hour = ceil((float)hour / 3);
+    for (NSDictionary * dict in targetWeek) {
+        int weatherHour = [[dict valueForKey:@"$"] integerValue]/180;
+        if (weatherHour == hour) {
+            NSLog(@"Found 1");
+            NSDictionary *hourForecast = dict;
+            return hourForecast;
+        }
+    };
+    return nil;
 }
 
 -(void)notifyProgressForWeather

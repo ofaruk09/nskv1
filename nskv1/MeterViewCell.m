@@ -35,6 +35,7 @@ float maxMeterSize = 287;
 -(void)animateMeter
 {
     float viewPercentage = maxMeterSize * (percentageOfMeter/100);
+    if(viewPercentage < 50.0f) viewPercentage = 50.0f; // so meter does not become too small to see text
     Meter.layer.anchorPoint = CGPointMake(0.0, 0.5);
     CABasicAnimation *anim;
     anim = [CABasicAnimation animationWithKeyPath:@"transform.scale.x"];
@@ -47,6 +48,6 @@ float maxMeterSize = 287;
     
     CABasicAnimation *labelAnim;
     [Value.layer addAnimation:labelAnim forKey:@"position"];
-    [Value setFrame:CGRectMake(viewPercentage - 30, Value.frame.origin.y, 50, 20)];
+    [Value setFrame:CGRectMake(viewPercentage - 40, Value.frame.origin.y, 50, 20)];
 }
 @end

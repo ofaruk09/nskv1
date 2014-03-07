@@ -10,12 +10,10 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface FacebookEvent()
-- (void)sendRequests:(NSString *)fbID;
+- (void)sendRequests:(NSArray *)fbPages;
 - (void)requestCompleted:(FBRequestConnection *)connection
                   result:(id)result
                    error:(NSError *)error;
-- (void)openFacebookSession;
-- (void)downloadEvents;
 @end
 
 @implementation FacebookEvent
@@ -37,8 +35,8 @@
 static NSMutableArray* EventsList = nil;
 static NSMutableArray* PinnedList = nil;
 
-NSString *PUBLIC_FACEBOOK_EVENTS = @"303838247034/events?fields=attending,name,start_time,cover,description,end_time,location,venue&before=NTQzMTUzNjA5MTAyMjQ3&limit=25";
-NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,name,start_time,cover,description,end_time,location,venue";
+const NSString *PUBLIC_FACEBOOK_EVENTS = @"303838247034/events?fields=attending,name,start_time,cover,description,end_time,location,venue&before=NTQzMTUzNjA5MTAyMjQ3&limit=25";
+const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,name,start_time,cover,description,end_time,location,venue";
 
 +(id)getFacebookSingleton{
     static FacebookEvent *sharedFbEventClass = nil;
@@ -48,15 +46,10 @@ NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,na
     });
     return sharedFbEventClass;
 }
-- (void)beginFacebookSession{
-    PinnedList = [[NSMutableArray alloc]init];
-    EventsList = [[NSMutableArray alloc]init];
-    [self openFacebookSession];
-    [FBAppEvents activateApp];
-    [FBAppCall handleDidBecomeActive];
-}
 
 - (void)downloadEvents{
+    EventsList = [[NSMutableArray alloc]init];
+    PinnedList = [[NSMutableArray alloc]init];
     NSArray *events = [[NSArray alloc]initWithObjects:PUBLIC_FACEBOOK_EVENTS,
                        PRIVATE_FACEBOOK_EVENTS, nil];
     [self sendRequests:events];
@@ -65,36 +58,6 @@ NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,na
 - (void)dealloc {
     [_requestConnection cancel];
 }
-
-- (void)openFacebookSession {
-    NSLog(@"Hi");
-    NSArray *perm = [[NSArray alloc]initWithObjects:@"rsvp_event", nil];
-    [FBSession openActiveSessionWithPublishPermissions:perm defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-        if (error) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:error.localizedDescription
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-            // if otherwise we check to see if the session is open, an alternative to
-            // to the FB_ISSESSIONOPENWITHSTATE helper-macro would be to check the isOpen
-            // property of the session object; the macros are useful, however, for more
-            // detailed state checking for FBSession objects
-        }
-        if (FB_ISSESSIONOPENWITHSTATE(status)) {
-            // send our requests if we successfully logged in
-            NSLog(@"permission granted");
-            
-            [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                NSMutableDictionary *dictionary = (NSMutableDictionary *)result;
-                userID = [dictionary objectForKey:@"id"];
-                [self downloadEvents];
-            }];
-        }
-    }];
-}
-
 // FBSample logic
 // Read the ids to request from textObjectID and generate a FBRequest
 // object for each one.  Add these to the FBRequestConnection and
@@ -163,7 +126,6 @@ NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,na
         // error contains details about why the request failed
         text = error.localizedDescription;
     } else {
-        
         NSMutableDictionary *dictionary = (NSMutableDictionary *)result;
         //
         //NSLog([dictionary description]);
@@ -224,16 +186,6 @@ NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,na
                 }
             }
             
-            //            NSLog(@"%@", newEvent.eventName);
-            //            NSLog(@"%@", newEvent.eventID);
-            //            NSLog(@"%@", newEvent.eventStartTime);
-            //            NSLog(@"%@", newEvent.eventEndTime);
-            //            NSLog(@"%@", newEvent.eventLongitude);
-            //            NSLog(@"%@", newEvent.eventLatitude);
-            //            NSLog(@"%@", newEvent.eventDescription);
-            //            NSLog(@"%@", newEvent.eventImageSource);
-            //            NSLog(@"%@", newEvent.eventLocation);
-            
             NSDate *today = [NSDate date];
             bool addToList = true;
             if([today timeIntervalSinceDate:newEvent.eventStartDate] > 0){
@@ -247,20 +199,25 @@ NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,na
                 
                 if([listDate isEqualToString:currentEventDate] && [listName isEqualToString:currentEventName]){
                     NSLog(@"Match found at event: %@ <-->: %@", ev.eventName, newEvent.eventName);
-                    //addToList = false;
+                    addToList = false;
                 }
+            }
+            if(newEvent.eventStartDate == nil)
+            {
+                addToList = false;
             }
             if(addToList){
                 [EventsList addObject:newEvent];
                 if(newEvent.eventAttending) [PinnedList addObject:newEvent];
             }
-            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         }
         //
         // check if there is any more events
         //
         //trigger table reload
         for (int i = 0; i < (int)[EventsList count]; i++) {
+            
             FacebookEvent *ev = [EventsList objectAtIndex:i];
             dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0ul);
             dispatch_async(queue, ^(void){

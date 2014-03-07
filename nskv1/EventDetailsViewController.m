@@ -8,6 +8,7 @@
 
 #import "EventDetailsViewController.h"
 #import "AppDelegate.h"
+#import "kayakingConditionsButtonCell.h"
 
 @interface EventDetailsViewController ()
 
@@ -16,6 +17,7 @@
 @implementation EventDetailsViewController
 @synthesize fbEvent;
 @synthesize pinButton;
+@synthesize weatherConditionsButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -174,14 +176,26 @@
         return cell;
     }
     else {
-        static NSString *CellIdentifier = @"eventWeatherButtonCell";
-        UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        static NSString *CellIdentifier = @"eventConditionsCell";
+        kayakingConditionsButtonCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
+        timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
+        NSLog(@"timeToEvent: %f",timeToEvent);
+        if(timeToEvent >= 5.0f){
+            [cell.conditionsButton.titleLabel setText:@"Conditions Not Available"];
+            [cell.conditionsButton setEnabled:false];
+        }
+        else
+        {
+            [cell.conditionsButton.titleLabel setText:@"Show Conditions"];
+            [cell.conditionsButton setEnabled:true];
+        }
         return cell;
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.item == 0){
-        return 160;
+        return 213;
     }
     else if (indexPath.item == 1){
         return 50;
@@ -246,18 +260,8 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([[segue identifier] isEqualToString:@"showWeatherForEvent"]){
-        // check if within 5 days of event day
-        double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
-        timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
-        
-        //if(timeToEvent <= 5.0f){
         WeatherTidesViewController *wvController = segue.destinationViewController;
         wvController.fbEvent = fbEvent;
-        wvController.timeToEvent = timeToEvent;
-        //}
-        //else{
-        //show message to show no wether data beyond 5 days!
-        //}
     }
 }
 @end
