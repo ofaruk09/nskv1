@@ -9,10 +9,11 @@
 #import "WeatherEvent.h"
 
 @interface WeatherEvent()
-- (void) findWeatherDataForTimeAndPlace:(CLLocation*)myLocation
-                           locationList:(NSDictionary*)locationList
-                       andFacebookEvent:(FacebookEvent*)fbEvent;
-- (void) createWeatherObject:(NSDictionary *)weather;
+- (void) findWeatherDataForPlace:(CLLocation*)myLocation
+                    locationList:(NSDictionary*)locationList
+                andFacebookEvent:(FacebookEvent*)fbEvent;
+- (void) createWeatherObject:(NSDictionary *)weather
+           withFacebookEvent:(FacebookEvent *)fbEvent;
 @end
 
 @implementation WeatherEvent
@@ -36,10 +37,13 @@ NSString *dataFormat = @"val/wxfcs/all/json/";
 float const MAX_WIND_SPEED = 15;
 int const WEATHER_TOTAL_STEPS = 4;
 int steps = WEATHER_TOTAL_STEPS;
+// this const is used for the conversion of mph to kt
 const float mpHtokt = 0.868976;
 
 +(NSArray*) weatherTypes
 {
+    // this array contains all the weather definitions returned by the weather
+    // service
     NSArray *weatherTypes = [[NSArray alloc]initWithObjects: @"Clear Night",
                 @"Sunny Day",
                 @"Partly Cloudy (Night)",
@@ -141,7 +145,6 @@ const float mpHtokt = 0.868976;
     //WE NOW HAVE THE CLOSEST STATION ID;
     //WE CAN REQUEST THE WEATHER INFORMATION FOR THAT PARTICULAR STATION
     NSString * weatherSite = [[NSString alloc]initWithFormat:@"%@%@%@?res=3hourly&%@",baseWeatherAddress,dataFormat,closestStationID,apiKey];
-    NSLog(weatherSite);
     NSURL *url = [NSURL URLWithString:weatherSite];
     NSURLRequest * request = [NSURLRequest requestWithURL:url
                                               cachePolicy:NSURLCacheStorageNotAllowed
@@ -158,7 +161,6 @@ const float mpHtokt = 0.868976;
              NSDictionary * weatherData = [NSJSONSerialization JSONObjectWithData:data
                                                            options:kNilOptions
                                                              error: &error];
-             NSLog([weatherData description]);
              [self notifyProgressForWeather];
              [self createWeatherObject:weatherData withFacebookEvent:fbEvent];
          }
@@ -173,7 +175,6 @@ const float mpHtokt = 0.868976;
 - (void) createWeatherObject:(NSDictionary *)weather
            withFacebookEvent:(FacebookEvent *)fbEvent
 {
-    //NSLog([weather description]);
     NSDictionary *locationData = [[[weather objectForKey:@"SiteRep"] objectForKey:@"DV"]objectForKey:@"Location"];
     
     baseStation = [locationData valueForKey:@"name"];
@@ -190,7 +191,7 @@ const float mpHtokt = 0.868976;
     eventFeelsLikeTemperature = [weatherContent valueForKey:@"F"];
     NSUInteger wTemp = [[weatherContent valueForKey:@"W"] integerValue];
     eventWeatherType = [[WeatherEvent weatherTypes] objectAtIndex:wTemp];
-    eventWeatherTypeValue = [NSString stringWithFormat:@"%i",wTemp];
+    eventWeatherTypeValue = [NSString stringWithFormat:@"%lu",(unsigned long)wTemp];
     eventWindDirection = [weatherContent valueForKey:@"D"];
     
     //Conversion of mph to kt
@@ -213,6 +214,7 @@ const float mpHtokt = 0.868976;
     else if([eventVisibility isEqualToString:@"EX"]) eventVisibility = @"Excellent";
     
     //SOLVING PERCENTAGE OF MAX WIND SPEED
+    // we need to calculate the percentage of the max wind speed this events wind speed is.
     
     if ([eventWindSpeed floatValue] <= MAX_WIND_SPEED) {
         percentageOfMaxWindSpeedWind= ([eventWindSpeed floatValue]/MAX_WIND_SPEED)*100;
@@ -228,7 +230,7 @@ const float mpHtokt = 0.868976;
     }
     
     //CONDITIONING MESSAGE
-    
+    // create the right message for the user to display in the table
     if([eventWindGusting floatValue] > MAX_WIND_SPEED)
     {
         userMessage = @"Wind gust exceeds general guideline of 15kt";
@@ -245,7 +247,7 @@ const float mpHtokt = 0.868976;
     //first we need to find the right day of the week so must match target date from list of periods
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *components = [calendar components:(NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit | NSHourCalendarUnit) fromDate:targetDate];
-    NSString *jsonDate = [NSString stringWithFormat:@"%04i-%02i-%02iZ",components.year,components.month,components.day];
+    NSString *jsonDate = [NSString stringWithFormat:@"%04li-%02li-%02liZ",(long)components.year,(long)components.month,(long)components.day];
     //now perform the matching
     NSArray *targetWeek = nil;
     for (NSDictionary *dict in listOfPeriods) {
@@ -255,13 +257,12 @@ const float mpHtokt = 0.868976;
         }
     }
     //Now we must find the matching hour
-    int hour = [components hour];
+    long hour = [components hour];
     //round up to the hour to the nearest multiple of 3 because forecasts are 3 hourly starting at 0 then divide by 3 to get the index of the 3-hourly forecast we want
-    hour = ceil((float)hour / 3);
+    hour = (long)ceil(hour / 3);
     for (NSDictionary * dict in targetWeek) {
-        int weatherHour = [[dict valueForKey:@"$"] integerValue]/180;
+        long weatherHour = (long)[[dict valueForKey:@"$"] integerValue]/180;
         if (weatherHour == hour) {
-            NSLog(@"Found 1");
             NSDictionary *hourForecast = dict;
             return hourForecast;
         }

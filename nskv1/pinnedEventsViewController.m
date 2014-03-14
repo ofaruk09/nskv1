@@ -31,7 +31,6 @@
                                              selector:@selector(refreshView)
                                                  name:@"refreshPinnedList"
                                                object:nil];
-    NSLog(@"%i",PinnedEvents.count);
     [self refreshView];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -41,7 +40,6 @@
 }
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"view did appear");
     [self refreshView];
     [self.tableView reloadData];
 }
@@ -56,21 +54,20 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return [PinnedEvents count];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 80;
 }
-
+// selector description:
+// displays all the events that the user has pinned
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -81,66 +78,31 @@
     [cell.eventThumb setContentMode:UIViewContentModeScaleAspectFill];
     [cell.eventThumb setClipsToBounds:YES];
     cell.eventThumb.image = model.eventImage;
+    // check if the event is flagged by a push notification
     if([self eventIsFlagged:model]){
-        NSLog(@"changing status");
         [cell.eventStatusIcon setHidden:false];
     }
     return cell;
 }
+
+// selector description:
+// checks if an event has been flagged by checking the user defaults
 -(bool)eventIsFlagged:(FacebookEvent*) event
 {
+    // separates out the values held in the user defaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *newPrefs = [defaults objectForKey:@"FacebookEventChanged"];
     NSArray *currentFlaggedEvents = [newPrefs componentsSeparatedByString:@","];
     for (NSString *str in currentFlaggedEvents) {
+        // if the event id in question matches the event id held in the defaults,
+        // return true
         if([str isEqualToString:event.eventID]){
-            NSLog(@"This event has been flagged");
             return true;
         }
     }
+    // if there is no such entry, just return false
     return false;
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 
 #pragma mark - Navigation
 
@@ -151,13 +113,18 @@
     // Pass the selected object to the new view controller.
     if([[segue identifier] isEqualToString:@"eventDetails"]){
         EventsCell *cell =(EventsCell*)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForSelectedRow]];
+        // now we need to deal with the flag for the flagged events
+        // first remove the status icon
         [cell.eventStatusIcon setHidden:true];
+        // then call the selector to remove the flag from the user prefs.
         [self removeFlagForEvent:[PinnedEvents objectAtIndex:[self.tableView indexPathForSelectedRow].row]];
         EventDetailsViewController *eventdet = segue.destinationViewController;
         eventdet.fbEvent = [PinnedEvents objectAtIndex:[self.tableView indexPathForSelectedRow].row];
     }
 }
-
+// selector description:
+// checks if the event passed to selector is flagged, if it is, removes it from
+// the user prefs
 - (void)removeFlagForEvent:(FacebookEvent *)event
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -165,12 +132,14 @@
     NSArray *currentFlaggedEvents = [newPrefs componentsSeparatedByString:@","];
     [defaults removeObjectForKey:@"FacebookEventChanged"];
     NSString *newDefaultValue;
+    // loops through the list of events, finds the event, removes it from the list
     for (NSString *str in currentFlaggedEvents) {
         NSLog(@"%@ - %@",str, event.eventID);
         if(![str isEqualToString:event.eventID]){
            newDefaultValue = [newDefaultValue stringByAppendingString:[NSString stringWithFormat:@"%@,",str]];
         }
     }
+    // sets the new user prefs.
     [defaults setObject:newDefaultValue forKey:@"FacebookEventChanged"];
 }
 

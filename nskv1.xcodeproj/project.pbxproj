@@ -229,6 +229,14 @@
 				TargetAttributes = {
 					2EDB52721842E1C100A58733 = {
 						DevelopmentTeam = 679D3DL4GB;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

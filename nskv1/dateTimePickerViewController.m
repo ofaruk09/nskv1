@@ -31,8 +31,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     NSDate *minDate = [NSDate date];
+    // 432000 is the number of seconds in 5 days
     NSDate *maxDate = [NSDate dateWithTimeInterval:432000 sinceDate:minDate];
-    
+    // set the max bounds for the date picter
     [dateAndTimePicker setMinimumDate:minDate];
     [dateAndTimePicker setMaximumDate:maxDate];
 }
@@ -46,8 +47,6 @@
 {
     
     fbEvent.eventStartDate = [dateAndTimePicker date];
-    NSLog([fbEvent.eventStartDate description]);
-    NSLog(@"event location: %f , %f",fbEvent.eventLongitude,fbEvent.eventLatitude);
     WeatherTidesViewController *contr = segue.destinationViewController;
     contr.fbEvent = fbEvent;
 }

@@ -30,6 +30,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    // add a crosshair to the view
     float x = ((mapView.frame.size.width)/2) - 20;
     float y = ((mapView.frame.size.height)/2) - 20;
     CGRect crossHair = CGRectMake(x, y, 40, 40);
@@ -46,11 +47,11 @@
 {
     if([[segue identifier] isEqualToString:@"datePicker"]){
         CLLocationCoordinate2D position = mapView.centerCoordinate;
+        // we use a facebook event to encapsulate the information and
+        // hand it to the kayaking conditions so we can reuse the view
         FacebookEvent *tempEvent = [[FacebookEvent alloc]init];
         tempEvent.eventLongitude = position.longitude;
         tempEvent.eventLatitude = position.latitude;
-        NSLog(@"event location: %f , %f",tempEvent.eventLongitude,tempEvent.eventLatitude);
-        
         dateTimePickerViewController *contr = segue.destinationViewController;
         contr.fbEvent = tempEvent;
     }

@@ -38,6 +38,8 @@ static NSMutableArray* PinnedList = nil;
 const NSString *PUBLIC_FACEBOOK_EVENTS = @"303838247034/events?fields=attending,name,start_time,cover,description,end_time,location,venue&before=NTQzMTUzNjA5MTAyMjQ3&limit=25";
 const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,name,start_time,cover,description,end_time,location,venue";
 
+// Selector Description:
+// getting an instance of the facebook class so we can make requests.
 +(id)getFacebookSingleton{
     static FacebookEvent *sharedFbEventClass = nil;
     static dispatch_once_t onceToken;
@@ -47,6 +49,8 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
     return sharedFbEventClass;
 }
 
+// Selector Description:
+// Sends creates the relevant objects to begin downloading events from facebook
 - (void)downloadEvents{
     EventsList = [[NSMutableArray alloc]init];
     PinnedList = [[NSMutableArray alloc]init];
@@ -58,23 +62,12 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
 - (void)dealloc {
     [_requestConnection cancel];
 }
-// FBSample logic
-// Read the ids to request from textObjectID and generate a FBRequest
-// object for each one.  Add these to the FBRequestConnection and
-// then connect to Facebook to get results.  Store the FBRequestConnection
-// in case we need to cancel it before it returns.
-//
-// When a request returns results, call requestComplete:result:error.
-//
+
+// Selector Description:
+// Sends requests for the graph paths specified in the array that is passed to the selector
 - (void)sendRequests:(NSArray *)fbPages {
-    
-    // extract the id's for which we will request the profile
-    
-    // create the connection object
+    // Create a new facebook connection for the completion handler
     FBRequestConnection *newConnection = [[FBRequestConnection alloc] init];
-    
-    // for each fbid in the array, we create a request object to fetch
-    // the profile, along with a handler to respond to the results of the request
     
     // create a handler block to handle the results of the request for fbid's profile
     FBRequestHandler handler =
@@ -83,24 +76,12 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
         [self requestCompleted:connection result:result error:error];
     };
     
-    // create the request object, using the fbid as the graph path
-    // as an alternative the request* static methods of the FBRequest class could
-    // be used to fetch common requests, such as /me and /me/friends
+    // create the request object with the array containing the paths for the graph to get results
     for (int i = 0; i < fbPages.count; i++) {
-        FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession
-                                                      graphPath:[fbPages objectAtIndex:i]];
-        // add the request to the connection object, if more than one request is added
-        // the connection object will compose the requests as a batch request; whether or
-        // not the request is a batch or a singleton, the handler behavior is the same,
-        // allowing the application to be dynamic in regards to whether a single or multiple
-        // requests are occuring
+        FBRequest *request = [[FBRequest alloc] initWithSession:FBSession.activeSession graphPath:[fbPages objectAtIndex:i]];
+        // add the request for the page wanted
         [newConnection addRequest:request completionHandler:handler];
-        
-        
-        
     }
-    // if there's an outstanding connection, just cancel
-    //[self.requestConnection cancel];
     
     // keep track of our connection, and start it
     self.requestConnection = newConnection;
@@ -117,34 +98,34 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
         connection != self.requestConnection) {
         return;
     }
-    
     // clean this up, for posterity
     self.requestConnection = nil;
-    
-    NSString *text;
     if (error) {
         // error contains details about why the request failed
-        text = error.localizedDescription;
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:error.localizedDescription delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+        [alert show];
     } else {
+        // first we convert the results into a dictionary so we can pluck the values we require out.
         NSMutableDictionary *dictionary = (NSMutableDictionary *)result;
-        //
-        //NSLog([dictionary description]);
-        //code to make objects from current dictionary
-        //
         NSArray *nodes = (NSArray *)[dictionary objectForKey:@"data"];
+        // Now we need to go through every node in the list of events and start creating a list of objects
         for (int i = 0; i < [nodes count]; i++) {
             // create the objects here and fill them up
             static FacebookEvent * newEvent;
             newEvent = [[FacebookEvent alloc]init];
+            // grab the event at this index
             NSDictionary * thisEvent = [nodes objectAtIndex:i];
+            
+            // now we need to find out whether the user of this app is attending the event being downloaded
             newEvent.eventAttending = false;
             NSArray *attending = [[thisEvent objectForKey:@"attending"]objectForKey:@"data"];
             for (int i = 0; i < attending.count; i++) {
+                // loop through each event and see if any of the ID's in here match the ID we have from before
                 if ([[[attending objectAtIndex:i]valueForKey:@"id"] isEqualToString:userID]) {
                     newEvent.eventAttending = true;
                 }
             }
-            //            NSLog([thisEvent description]);
+            // get the rest of the properties
             newEvent.eventName = [thisEvent valueForKey:@"name"];
             newEvent.eventID = [thisEvent valueForKey:@"id"];
             newEvent.eventLongitude = [[[thisEvent objectForKey:@"venue"] valueForKey:@"longitude"]floatValue];
@@ -154,6 +135,9 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
             newEvent.eventLocation = [thisEvent valueForKey:@"location"];
             NSString *startTempString =  [thisEvent valueForKey:@"start_time"];
             NSString *endTempString = [thisEvent valueForKey:@"end_time"];
+            
+            // Because we have more than 2 posible date formats, we have to the date formatter objects in the right way for the date given
+            // first we do checks for the event start date
             if([startTempString length] > 10){
                 NSDateFormatter *format = [[NSDateFormatter alloc]init];
                 [format setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
@@ -168,6 +152,7 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
                 newEvent.eventStartDate = startDate;
                 newEvent.dateFormatterStart = format;
             }
+            // then we do checks for the event end date
             if ([endTempString length] > 10) {
                 NSDateFormatter *format = [[NSDateFormatter alloc]init];
                 [format setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
@@ -186,12 +171,17 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
                 }
             }
             
+            // Now we should check if the event is in the past
+            
             NSDate *today = [NSDate date];
             bool addToList = true;
             if([today timeIntervalSinceDate:newEvent.eventStartDate] > 0){
                 addToList = false;
             }
+            
+            // check if there are any matching events because events are duplicated across the members facebook page and the public facebook page
             for (FacebookEvent *ev in EventsList) {
+                // to find a match, we compare the dates and the description
                 NSString *listDate = ev.eventStartDate.description;
                 NSString *currentEventDate = newEvent.eventStartDate.description;
                 NSString *listName = [ev.eventName stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -202,20 +192,20 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
                     addToList = false;
                 }
             }
+            // if the event is corrupt and does not have a date, do not add it to the list
             if(newEvent.eventStartDate == nil)
             {
                 addToList = false;
             }
+            // if the event has passed all the checks, add it to the list
             if(addToList){
                 [EventsList addObject:newEvent];
                 if(newEvent.eventAttending) [PinnedList addObject:newEvent];
             }
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         }
-        //
-        // check if there is any more events
-        //
-        //trigger table reload
+        
+        // now we must download all the image for the event,
+        // we do this by adding adding a async url request and when it is done we can notify any views that are waiting for this data to update
         for (int i = 0; i < (int)[EventsList count]; i++) {
             
             FacebookEvent *ev = [EventsList objectAtIndex:i];
@@ -229,18 +219,16 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
         }
     }
 }
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-    return [FBAppCall handleOpenURL:url
-                  sourceApplication:sourceApplication];
-}
 
+// Selector Description:
+// get a list of all events
 + (NSMutableArray *)getEventsList
 {
     return EventsList;
 }
+
+// Selector Description:
+// get a list of pinned events
 + (NSMutableArray *)getPinnedList
 {
     return PinnedList;

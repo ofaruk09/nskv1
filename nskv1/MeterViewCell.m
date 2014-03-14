@@ -36,6 +36,8 @@ float maxMeterSize = 287;
 {
     float viewPercentage = maxMeterSize * (percentageOfMeter/100);
     if(viewPercentage < 50.0f) viewPercentage = 50.0f; // so meter does not become too small to see text
+    
+    //set up the animation here
     Meter.layer.anchorPoint = CGPointMake(0.0, 0.5);
     CABasicAnimation *anim;
     anim = [CABasicAnimation animationWithKeyPath:@"transform.scale.x"];
@@ -43,9 +45,12 @@ float maxMeterSize = 287;
     anim.toValue = [NSNumber numberWithFloat:1.0f];
     anim.duration = 1.0;
     anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    // add the newly created animation to the view layer
     [Meter.layer addAnimation:anim forKey:@"position"];
+    // change the layer size to the new meter size
     Meter.frame = CGRectMake(Meter.frame.origin.x, Meter.frame.origin.y, viewPercentage, 30);
     
+    // add the animation to the label so it moves with the meter as it expands
     CABasicAnimation *labelAnim;
     [Value.layer addAnimation:labelAnim forKey:@"position"];
     [Value setFrame:CGRectMake(viewPercentage - 40, Value.frame.origin.y, 50, 20)];

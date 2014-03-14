@@ -27,6 +27,12 @@
     }
     return self;
 }
+// selector description:
+// this is the event handler for when the pin/unpin button is pressed.
+// if the event is pinned, it sends a message to facebook saying that the user
+// is coming to the event
+// if the event is unpinned, it sends a message to facebook saying that the user
+// is not coming to the event
 - (IBAction)PinEvent:(id)sender
 {
     if ([FBSession.activeSession.permissions indexOfObject:@"rsvp_event"] == NSNotFound) {
@@ -34,32 +40,30 @@
         NSLog(@"requesting permission");
     }
     else{
+        // if the user is attending flip the values and say user is not attending
         if(fbEvent.eventAttending){
             fbEvent.eventAttending = false;
             [self changePinLabel];
             NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/declined"];
-            NSLog(@"Event Unpinned");
+            // send a message to facebook
             [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 if(error){
-                    NSLog([error description]);
                 }
                 else{
-                    NSLog(@"successful");
                     [[FacebookEvent getPinnedList] removeObject:fbEvent];
                 }
             }];
         }
+        // if the user is not attending flip the values and say user is attending
         else{
             fbEvent.eventAttending = true;
             [self changePinLabel];
             NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/attending"];
-            NSLog(@"Event Pinned");
+            // send a message to facebook
             [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 if(error){
-                    NSLog([error description]);
                 }
                 else{
-                    NSLog(@"successful");
                     [[FacebookEvent getPinnedList] addObject:fbEvent];
                 }
             }];
@@ -76,10 +80,11 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    NSLog(fbEvent.eventID);
     [self changePinLabel];
 }
 
+// selector description:
+// called when user presses the pin and unpin button
 -(void)changePinLabel
 {
     if(fbEvent.eventAttending){
@@ -100,26 +105,27 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
+    // there are 6 sections to display all the event information.
     return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // index path to display the event image
     if(indexPath.item == 0){
         static NSString *CellIdentifier = @"eventImage";
         EventImageCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         cell.eventImage.image = fbEvent.eventImage;
         return cell;
     }
+    // index path to display the event name
     else if(indexPath.item == 1){
         static NSString *CellIdentifier = @"eventDetailsCell";
         UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
@@ -127,19 +133,24 @@
         cell.detailTextLabel.text = fbEvent.eventName;
         return cell;
     }
+    // index path to display the event description
     else if(indexPath.item == 2){
         static NSString *CellIdentifier = @"eventDetailsCell";
         UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        // set the detail label so the word wraps to the size of the view
         cell.textLabel.text = @"Event Description";
         cell.detailTextLabel.text = fbEvent.eventDescription;
         cell.detailTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.detailTextLabel.numberOfLines = 0;
         return cell;
     }
+    // index path to display the event start time
     else if (indexPath.item == 3){
         static NSString *CellIdentifier = @"eventDetailsCell";
         UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = @"Event Start Time";
+        // we have to check the format of the date given by facebook so we can
+        // display the date properly to the user
         if([fbEvent.dateFormatterStart dateFormat].length > 10){
             NSString *date = [[fbEvent.dateFormatterStart stringFromDate:fbEvent.eventStartDate]substringWithRange:NSMakeRange(0, 10)];
             NSString *time = [[fbEvent.dateFormatterStart stringFromDate:fbEvent.eventStartDate]substringWithRange:NSMakeRange(11, 5)];
@@ -153,10 +164,13 @@
         
         return cell;
     }
+    // index path for event end time
     else if (indexPath.item == 4){
         static NSString *CellIdentifier = @"eventDetailsCell";
         UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = @"Event End Time";
+        // we have to check the format of the date given by facebook so we can
+        // display the date properly to the user
         if([fbEvent.dateFormatterEnd dateFormat].length > 10 && fbEvent.eventEndDate != nil)
         {
             NSString *date = [[fbEvent.dateFormatterEnd stringFromDate:fbEvent.eventEndDate]substringWithRange:NSMakeRange(0, 10)];
@@ -168,38 +182,54 @@
             NSString *date = [fbEvent.dateFormatterEnd stringFromDate:fbEvent.eventEndDate];
             cell.detailTextLabel.text = [date stringByAppendingString:@" at no time specified"];
         }
+        // sometimes the right information will not be given so we tell the user to speak to the supervisor
         else
         {
             cell.detailTextLabel.text = @"Contact Supervisor for Information";
         }
-        //cell.detailTextLabel.text = [[fbEvent.eventEndDate stringByAppendingString:@" at "]stringByAppendingString:fbEvent.eventEndTime];
         return cell;
     }
+    // index path for button to view kayaking conditions
     else {
+        // we only enable the button if the event is less than 5 days from the
+        // event start date. Because of this we need to calculate how many days
+        // till the start of the event
         static NSString *CellIdentifier = @"eventConditionsCell";
         kayakingConditionsButtonCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
         timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
         NSLog(@"timeToEvent: %f",timeToEvent);
-        if(timeToEvent >= 5.0f){
-            [cell.conditionsButton.titleLabel setText:@"Conditions Not Available"];
-            [cell.conditionsButton setEnabled:false];
+        // if the time is less than 5 days, enable the buttoon
+        if(timeToEvent <= 5.0f){
+            [cell.conditionsButton setTitle:@"Show Kayaking Conditions" forState:UIControlStateNormal];
+            [cell.conditionsButton setEnabled:YES];
         }
         else
         {
-            [cell.conditionsButton.titleLabel setText:@"Show Conditions"];
-            [cell.conditionsButton setEnabled:true];
+            // we minus 5 days off the time to event so the message takes into
+            // account from which day the weather information is available which
+            // is 5 days from the event start date.
+            timeToEvent -=5;
+            NSString *message = [NSString stringWithFormat:@"Conditions available in %i days",(int)timeToEvent];
+            [cell.conditionsButton setTitle:message forState:UIControlStateNormal];
+            [cell.conditionsButton setEnabled:NO];
         }
         return cell;
     }
 }
+// selector description:
+// returns the row height for each row
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    // image is 213 pixels high
     if(indexPath.item == 0){
         return 213;
     }
+    // event name cell is 50 pixels high
     else if (indexPath.item == 1){
         return 50;
     }
+    // we must determine the size of the event description cell from the
+    // amount of text in the description
     else if(indexPath.item == 2){
         UIFont *contentFont = [UIFont fontWithName:@"Helvetica Neue" size:15.0];
         UIFont *sectionFont = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
@@ -209,50 +239,11 @@
         
         return contentSize.height + sectionSize.height + 20;
     }
+    // all other cells have a height of 60
     else{
-        return 50;
+        return 60;
     }
 }
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 
 #pragma mark - Navigation
 

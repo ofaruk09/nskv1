@@ -196,18 +196,18 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="eventConditionsCell" id="Qtc-fI-yuy" customClass="kayakingConditionsButtonCell">
-                                <rect key="frame" x="0.0" y="343" width="320" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="eventConditionsCell" rowHeight="60" id="Qtc-fI-yuy" customClass="kayakingConditionsButtonCell">
+                                <rect key="frame" x="0.0" y="343" width="320" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qtc-fI-yuy" id="VlP-JR-L87">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Cww-I3-fXH">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                        <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" id="Cww-I3-fXH">
+                                            <rect key="frame" x="-21" y="0.0" width="363" height="60"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="0.6222789073379299" blue="0.18538870536390484" alpha="1" colorSpace="calibratedRGB"/>
-                                            <state key="normal" title="Conditions Not Available">
+                                            <state key="normal" title="Message">
                                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
