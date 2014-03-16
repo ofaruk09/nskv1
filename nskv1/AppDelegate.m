@@ -121,7 +121,7 @@ NSString *NOTCONNECTEDTOINTERNET = @"Not connected to the internet, please ensur
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
-    [alert show]
+    [alert show];
 }
 // Selector Description:
 // checks if we have both a facebook id and a device token, then sends both to the device token web service.
