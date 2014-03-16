@@ -294,7 +294,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="bfD-94-hEe" kind="push" identifier="datePicker" id="f37-XJ-ZyH"/>
+                                    <segue destination="bfD-94-hEe" kind="push" identifier="" id="f37-XJ-ZyH"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -652,7 +652,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="f37-XJ-ZyH"/>
         <segue reference="bV6-vi-EkS"/>
-        <segue reference="hVv-y4-pnU"/>
     </inferredMetricsTieBreakers>
 </document>

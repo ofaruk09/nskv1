@@ -45,7 +45,6 @@
 }
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    
     fbEvent.eventStartDate = [dateAndTimePicker date];
     WeatherTidesViewController *contr = segue.destinationViewController;
     contr.fbEvent = fbEvent;
