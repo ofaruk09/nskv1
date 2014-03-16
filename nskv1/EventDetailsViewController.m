@@ -42,28 +42,41 @@
     else{
         // if the user is attending flip the values and say user is not attending
         if(fbEvent.eventAttending){
-            fbEvent.eventAttending = false;
-            [self changePinLabel];
+            
             NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/declined"];
             // send a message to facebook
             [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 if(error){
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Unpinning"
+                        message:@"You do not have permission to unpin this event"
+                        delegate:self
+                        cancelButtonTitle:@"OK"
+                        otherButtonTitles:nil];
+                    [alert show];
                 }
                 else{
                     [[FacebookEvent getPinnedList] removeObject:fbEvent];
+                    fbEvent.eventAttending = false;
+                    [self changePinLabel];
                 }
             }];
         }
         // if the user is not attending flip the values and say user is attending
         else{
-            fbEvent.eventAttending = true;
-            [self changePinLabel];
             NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/attending"];
             // send a message to facebook
             [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 if(error){
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nomad Infinity Event"
+                        message:@"To pin this event, ensure you have Infinity membership and have joined the Nomad Members Facebook page"
+                        delegate:self
+                        cancelButtonTitle:@"OK"
+                        otherButtonTitles:nil];
+                    [alert show];
                 }
                 else{
+                    fbEvent.eventAttending = true;
+                    [self changePinLabel];
                     [[FacebookEvent getPinnedList] addObject:fbEvent];
                 }
             }];
