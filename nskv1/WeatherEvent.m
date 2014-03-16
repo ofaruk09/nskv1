@@ -127,14 +127,12 @@ const float mpHtokt = 0.868976;
                            locationList:(NSDictionary*)locationList
                        andFacebookEvent:(FacebookEvent*)fbEvent
 {
-    //NSLog([locationList description]);
     NSString *closestStationID;
     NSArray *dict = (NSArray*)[[locationList objectForKey:@"Locations"] objectForKey:@"Location"];
     double savedDistance = DBL_MAX;
     for (int i = 0; i < [dict count]; i++) {
         NSDictionary *dictStation = [dict objectAtIndex:i];
         CLLocation *currentStation = [[CLLocation alloc]initWithLatitude:[[dictStation valueForKey:@"latitude"] doubleValue] longitude:[[dictStation valueForKey:@"longitude"] doubleValue]];
-        //NSLog(@"%f",savedDistance);
         double currentDistance = [myLocation distanceFromLocation:currentStation];
         if(savedDistance > currentDistance){
             savedDistance = currentDistance;
@@ -157,7 +155,6 @@ const float mpHtokt = 0.868976;
                          NSData * data,
                          NSError * error) {
          if([data length] > 0 && error == nil){
-             NSLog(@"Data Recieved");
              NSDictionary * weatherData = [NSJSONSerialization JSONObjectWithData:data
                                                            options:kNilOptions
                                                              error: &error];

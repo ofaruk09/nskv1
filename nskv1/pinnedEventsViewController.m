@@ -134,7 +134,6 @@
     NSString *newDefaultValue;
     // loops through the list of events, finds the event, removes it from the list
     for (NSString *str in currentFlaggedEvents) {
-        NSLog(@"%@ - %@",str, event.eventID);
         if(![str isEqualToString:event.eventID]){
            newDefaultValue = [newDefaultValue stringByAppendingString:[NSString stringWithFormat:@"%@,",str]];
         }

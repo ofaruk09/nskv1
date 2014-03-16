@@ -73,7 +73,6 @@ NSString *NOTCONNECTEDTOINTERNET = @"Not connected to the internet, please ensur
         }
         if (FB_ISSESSIONOPENWITHSTATE(status)) {
             // send our requests if we successfully logged in
-            NSLog(@"permission granted");
             
             [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
                 if(error){
@@ -86,7 +85,6 @@ NSString *NOTCONNECTEDTOINTERNET = @"Not connected to the internet, please ensur
                     [alert show];
                 }
                 // gets the ID of the user, used for finding attending events
-                NSLog(@"Started Facebook Session");
                 NSMutableDictionary *dictionary = (NSMutableDictionary *)result;
                 ev.userID = [dictionary objectForKey:@"id"];
                 fbID = ev.userID;
@@ -113,13 +111,17 @@ NSString *NOTCONNECTEDTOINTERNET = @"Not connected to the internet, please ensur
                         stringByReplacingOccurrencesOfString: @"<" withString: @""]
                         stringByReplacingOccurrencesOfString: @">" withString: @""]
                         stringByReplacingOccurrencesOfString: @" " withString: @""];
-    NSLog(@"devToken: %@",devTokenField);
     // sends this selector when it has a device token
     [self sendDeviceTokenToService];
 }
 
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
-    NSLog(@"Error in registration. Error: %@", err);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:@"Failed to register for push notifications, please relaunch the app to try again"
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show]
 }
 // Selector Description:
 // checks if we have both a facebook id and a device token, then sends both to the device token web service.
@@ -161,9 +163,6 @@ NSString *NOTCONNECTEDTOINTERNET = @"Not connected to the internet, please ensur
         [defaults setBool:true forKey:@"TokenSent"];
         [defaults synchronize];
     }
-    else{
-        NSLog(@"token sent before");
-    }
 }
 // Selector Description:
 // Delegate for dealing with when a remote notification has arrived in app
@@ -189,7 +188,6 @@ NSString *NOTCONNECTEDTOINTERNET = @"Not connected to the internet, please ensur
     }
     if (addEventToPrefs) {
         // if the event should be added to the prefs, delete the current entry and rewrite a new list of notified events
-        NSLog(@"adding to prefs");
         [defaults removeObjectForKey:@"FacebookEventChanged"];
         // create a new comma separated string for the list of events changed
         NSString *newDefaultValue = @"";

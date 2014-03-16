@@ -188,7 +188,6 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
                 NSString *currentEventName = [newEvent.eventName stringByReplacingOccurrencesOfString:@" " withString:@""];
                 
                 if([listDate isEqualToString:currentEventDate] && [listName isEqualToString:currentEventName]){
-                    NSLog(@"Match found at event: %@ <-->: %@", ev.eventName, newEvent.eventName);
                     addToList = false;
                 }
             }

@@ -34,7 +34,6 @@
 
 -(void)animateImage
 {
-    NSLog(@"animateImage");
     CABasicAnimation *weatherBackgroundAnimation;
     weatherBackgroundAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
     weatherBackgroundAnimation.fromValue = [NSNumber numberWithFloat:0.1f];
