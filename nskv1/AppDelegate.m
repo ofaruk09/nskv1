@@ -11,8 +11,6 @@
 @implementation AppDelegate
 static NSString *devTokenField;
 NSString *fbID;
-NSString *NOTCONNECTEDTOINTERNET = @"Not connected to the internet, please ensure:  \n - Flight Mode is not enabled \n -You have an active data connection";
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -78,7 +76,7 @@ NSString *NOTCONNECTEDTOINTERNET = @"Not connected to the internet, please ensur
                 if(error){
                     // there was an issue connecting with the internet
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                    message:NOTCONNECTEDTOINTERNET
+                                                                    message:@"Not connected to the internet, please ensure:  \n - Flight Mode is not enabled \n -You have an active data connection"
                                                                    delegate:self
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil];
