@@ -11,6 +11,7 @@
 @implementation AppDelegate
 static NSString *devTokenField;
 NSString *fbID;
+bool errorIsShown = NO;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -57,13 +58,14 @@ NSString *fbID;
     // This code gets the permissions to get the events from facebook and post responses to events
     NSArray *perm = [[NSArray alloc]initWithObjects:@"rsvp_event", nil];
     [FBSession openActiveSessionWithPublishPermissions:perm defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
-        if (error) {
+        if (error && !errorIsShown) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                             message:error.localizedDescription
                                                            delegate:self
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
             [alert show];
+            errorIsShown = YES;
             // if otherwise we check to see if the session is open, an alternative to
             // to the FB_ISSESSIONOPENWITHSTATE helper-macro would be to check the isOpen
             // property of the session object; the macros are useful, however, for more
@@ -73,7 +75,7 @@ NSString *fbID;
             // send our requests if we successfully logged in
             
             [FBRequestConnection startForMeWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                if(error){
+                if(error && !errorIsShown){
                     // there was an issue connecting with the internet
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                     message:@"Not connected to the internet, please ensure:  \n - Flight Mode is not enabled \n -You have an active data connection"
@@ -81,6 +83,7 @@ NSString *fbID;
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil];
                     [alert show];
+                    errorIsShown = YES;
                 }
                 // gets the ID of the user, used for finding attending events
                 NSMutableDictionary *dictionary = (NSMutableDictionary *)result;

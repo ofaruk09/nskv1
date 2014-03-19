@@ -7,7 +7,6 @@
 //
 
 #import "WeatherTidesViewController.h"
-#include <Quartzcore/Quartzcore.h>
 
 @interface WeatherTidesViewController ()
 

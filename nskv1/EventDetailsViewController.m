@@ -39,6 +39,7 @@
     if(fbEvent.eventAttending){
         NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/declined"];
         // send a message to facebook
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = true;
         [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             if(error){
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Unpinning"
@@ -53,11 +54,14 @@
                 fbEvent.eventAttending = false;
                 [self changePinLabel];
             }
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = false;
         }];
+        
     }
     // if the user is not attending flip the values and say user is attending
     else{
         NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/attending"];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = true;
         // send a message to facebook
         [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
             if(error){
@@ -73,6 +77,7 @@
                 [self changePinLabel];
                 [[FacebookEvent getPinnedList] addObject:fbEvent];
             }
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = false;
         }];
     }
     
