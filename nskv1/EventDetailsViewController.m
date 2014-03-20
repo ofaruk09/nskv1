@@ -124,7 +124,12 @@
 {
     // Return the number of rows in the section.
     // there are 6 sections to display all the event information.
-    return 6;
+    if([self isEventFiveDaysFromStart]){
+       return 7;
+    }
+    else{
+        return 6;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -200,34 +205,39 @@
         }
         return cell;
     }
+    else if(indexPath.item ==5){
+        static NSString *CellIdentifier = @"eventDetailsCell";
+        UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        cell.textLabel.text = @"Event Location";
+        cell.detailTextLabel.text = fbEvent.eventLocation;
+        return cell;
+    }
     // index path for button to view kayaking conditions
-    else {
+    else{
         // we only enable the button if the event is less than 5 days from the
         // event start date. Because of this we need to calculate how many days
         // till the start of the event
         static NSString *CellIdentifier = @"eventConditionsCell";
         kayakingConditionsButtonCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
-        timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
-        // if the time is less than 5 days, enable the buttoon
-        if(timeToEvent <= 5.0f){
-            [cell.conditionsButton setTitle:@"Show Kayaking Conditions" forState:UIControlStateNormal];
-            [cell.conditionsButton setEnabled:YES];
-        }
-        else
-        {
-            // we minus 5 days off the time to event so the message takes into
-            // account from which day the weather information is available which
-            // is 5 days from the event start date.
-            timeToEvent -=5;
-            NSString *message = [NSString stringWithFormat:@"Conditions available in %i days",(int)timeToEvent];
-            [cell.conditionsButton setTitle:message forState:UIControlStateNormal];
-            [cell.conditionsButton setEnabled:NO];
-        }
+        [cell.conditionsButton setTitle:@"Show Kayaking Conditions" forState:UIControlStateNormal];
+        [cell.conditionsButton setEnabled:YES];
+        [cell.conditionsButton setTitle:@"Show Kayaking Conditions" forState:UIControlStateNormal];
+        [cell.conditionsButton setEnabled:YES];
         return cell;
     }
 }
-// selector description:
+- (bool) isEventFiveDaysFromStart
+{
+    double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
+    timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
+    if(timeToEvent <= 5.0f){
+        return YES;
+    }
+    else
+    {
+        return NO;
+    }
+}// selector description:
 // returns the row height for each row
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     // image is 213 pixels high
