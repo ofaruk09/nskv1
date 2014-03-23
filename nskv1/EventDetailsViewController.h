@@ -16,6 +16,5 @@
 @property (strong, nonatomic) IBOutlet UINavigationItem *ViewController;
 - (IBAction)PinEvent:(id)sender;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *pinButton;
-@property (strong, nonatomic) IBOutlet UIButton *weatherConditionsButton;
 @property FacebookEvent *fbEvent;
 @end

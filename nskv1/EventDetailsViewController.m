@@ -8,7 +8,6 @@
 
 #import "EventDetailsViewController.h"
 #import "AppDelegate.h"
-#import "kayakingConditionsButtonCell.h"
 
 @interface EventDetailsViewController ()
 
@@ -17,7 +16,6 @@
 @implementation EventDetailsViewController
 @synthesize fbEvent;
 @synthesize pinButton;
-@synthesize weatherConditionsButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -218,11 +216,7 @@
         // event start date. Because of this we need to calculate how many days
         // till the start of the event
         static NSString *CellIdentifier = @"eventConditionsCell";
-        kayakingConditionsButtonCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        [cell.conditionsButton setTitle:@"Show Kayaking Conditions" forState:UIControlStateNormal];
-        [cell.conditionsButton setEnabled:YES];
-        [cell.conditionsButton setTitle:@"Show Kayaking Conditions" forState:UIControlStateNormal];
-        [cell.conditionsButton setEnabled:YES];
+        UITableViewCell *cell =[tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
         return cell;
     }
 }
@@ -230,7 +224,7 @@
 {
     double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
     timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
-    if(timeToEvent <= 5.0f){
+    if(timeToEvent >= 5.0f){
         return YES;
     }
     else
