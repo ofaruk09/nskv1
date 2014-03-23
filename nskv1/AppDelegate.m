@@ -54,7 +54,7 @@ bool errorIsShown = NO;
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    FacebookEvent *ev = [FacebookEvent getFacebookSingleton];
+    FacebookEvent *ev = [[FacebookEvent alloc]init];
     // This code gets the permissions to get the events from facebook and post responses to events
     NSArray *perm = [[NSArray alloc]initWithObjects:@"rsvp_event", nil];
     [FBSession openActiveSessionWithPublishPermissions:perm defaultAudience:FBSessionDefaultAudienceFriends allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {

@@ -39,17 +39,6 @@ const NSString *PUBLIC_FACEBOOK_EVENTS = @"303838247034/events?fields=attending,
 const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,name,start_time,cover,description,end_time,location,venue";
 
 // Selector Description:
-// getting an instance of the facebook class so we can make requests.
-+(id)getFacebookSingleton{
-    static FacebookEvent *sharedFbEventClass = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedFbEventClass = [[self alloc] init];
-    });
-    return sharedFbEventClass;
-}
-
-// Selector Description:
 // Sends creates the relevant objects to begin downloading events from facebook
 - (void)downloadEvents{
     EventsList = [[NSMutableArray alloc]init];

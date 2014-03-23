@@ -29,7 +29,6 @@
 
 + (NSMutableArray *) getEventsList;
 + (NSMutableArray *) getPinnedList;
-+ (id) getFacebookSingleton;
 - (void) downloadEvents;
 
 
