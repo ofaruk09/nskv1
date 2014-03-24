@@ -12,7 +12,6 @@
 #import "FacebookEvent.h"
 #import "EventsCell.h"
 
-@interface pinnedEventsViewController : UITableViewController
--(void) refreshView;
-@property NSMutableArray *PinnedEvents;
+@interface PinnedEventsViewController : UITableViewController
+
 @end

@@ -31,7 +31,7 @@
 @synthesize percentageOfMaxWindSpeedWind;
 @synthesize percentageOfMaxWindSpeedGust;
 NSString *baseWeatherAddress = @"http://datapoint.metoffice.gov.uk/public/data/";
-NSString *apiKey = @"key=9a359b8e-179a-4164-8e29-dcfab50bed8a";
+NSString *apiKey = @"key=b254846a-66cd-4a7e-8fe4-bdd3dca0426f";
 NSString *allLocations = @"val/wxfcs/all/json/sitelist";
 NSString *dataFormat = @"val/wxfcs/all/json/";
 float const MAX_WIND_SPEED = 15;

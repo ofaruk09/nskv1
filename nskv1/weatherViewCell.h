@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface WeatherViewCell : UITableViewCell
-@property (strong, nonatomic) IBOutlet UIImageView *WeatherImage;
-@property (strong, nonatomic) IBOutlet UILabel *WeatherActualTemperature;
-@property (strong, nonatomic) IBOutlet UILabel *WeatherFeelsLikeTemperature;
-@property (strong, nonatomic) IBOutlet UILabel *WeatherTypeLabel;
-@property (strong, nonatomic) IBOutlet UILabel *WeatherVisibilityLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *weatherImage;
+@property (strong, nonatomic) IBOutlet UILabel *weatherActualTemperature;
+@property (strong, nonatomic) IBOutlet UILabel *weatherFeelsLikeTemperature;
+@property (strong, nonatomic) IBOutlet UILabel *weatherTypeLabel;
+@property (strong, nonatomic) IBOutlet UILabel *weatherVisibilityLabel;
 -(void)animateImage;
 @end

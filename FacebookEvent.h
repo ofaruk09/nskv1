@@ -30,6 +30,4 @@
 + (NSMutableArray *) getEventsList;
 + (NSMutableArray *) getPinnedList;
 - (void) downloadEvents;
-
-
 @end

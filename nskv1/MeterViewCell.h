@@ -14,5 +14,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *MeterTypeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *optionalLabel;
 @property float percentageOfMeter;
+
 -(void)animateMeter;
 @end

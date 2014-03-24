@@ -12,5 +12,5 @@
 
 @interface dateTimePickerViewController : UIViewController
 @property FacebookEvent *fbEvent;
-@property (strong, nonatomic) IBOutlet UIDatePicker *dateAndTimePicker;
+
 @end

@@ -6,13 +6,14 @@
 //  Copyright (c) 2013 Omorr Faruk. All rights reserved.
 //
 
-#import "pinnedEventsViewController.h"
+#import "PinnedEventsViewController.h"
 
-@interface pinnedEventsViewController ()
-
+@interface PinnedEventsViewController ()
+-(void) refreshView;
+@property NSMutableArray *PinnedEvents;
 @end
 
-@implementation pinnedEventsViewController
+@implementation PinnedEventsViewController
 @synthesize PinnedEvents;
 
 - (id)initWithStyle:(UITableViewStyle)style

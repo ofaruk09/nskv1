@@ -7,6 +7,9 @@
 //
 
 #import "MeterViewCell.h"
+@interface MeterViewCell ()
+
+@end
 
 @implementation MeterViewCell
 @synthesize Meter;
@@ -14,8 +17,8 @@
 @synthesize percentageOfMeter;
 @synthesize MeterTypeLabel;
 @synthesize optionalLabel;
+const float maxMeterSize = 287;
 
-float maxMeterSize = 287;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];

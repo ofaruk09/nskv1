@@ -10,6 +10,9 @@
 #import "AppDelegate.h"
 
 @interface EventDetailsViewController ()
+@property (strong, nonatomic) IBOutlet UINavigationItem *ViewController;
+- (IBAction)PinEvent:(id)sender;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *pinButton;
 
 @end
 
@@ -224,7 +227,7 @@
 {
     double timeToEvent = [fbEvent.eventStartDate timeIntervalSinceNow];
     timeToEvent = timeToEvent/86400; // 86400 is the number of seconds in a day
-    if(timeToEvent >= 5.0f){
+    if(timeToEvent <= 5.0f){
         return YES;
     }
     else

@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Omorr Faruk. All rights reserved.
 //
 
-#import "dateTimePickerViewController.h"
+#import "DateTimePickerViewController.h"
 
 @interface dateTimePickerViewController ()
-
+@property (strong, nonatomic) IBOutlet UIDatePicker *dateAndTimePicker;
 @end
 
 @implementation dateTimePickerViewController

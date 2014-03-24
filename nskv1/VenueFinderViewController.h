@@ -9,11 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "FacebookEvent.h"
-#import "dateTimePickerViewController.h"
+#import "DateTimePickerViewController.h"
 
 @interface VenueFinderViewController : UIViewController
-@property (strong, nonatomic) IBOutlet UIButton *selectLocationButton;
-@property (strong, nonatomic) IBOutlet UIImageView *crossHairView;
-@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 
 @end

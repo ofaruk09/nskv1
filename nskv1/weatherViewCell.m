@@ -9,11 +9,11 @@
 #import "WeatherViewCell.h"
 
 @implementation WeatherViewCell
-@synthesize WeatherActualTemperature;
-@synthesize WeatherFeelsLikeTemperature;
-@synthesize WeatherImage;
-@synthesize WeatherTypeLabel;
-@synthesize WeatherVisibilityLabel;
+@synthesize weatherActualTemperature;
+@synthesize weatherFeelsLikeTemperature;
+@synthesize weatherImage;
+@synthesize weatherTypeLabel;
+@synthesize weatherVisibilityLabel;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -40,8 +40,8 @@
     weatherBackgroundAnimation.toValue = [NSNumber numberWithFloat:1.0f];
     weatherBackgroundAnimation.duration = 1.0;
     weatherBackgroundAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-    [WeatherImage.layer addAnimation:weatherBackgroundAnimation forKey:@"alpha"];
-    [WeatherImage setAlpha:1];
+    [weatherImage.layer addAnimation:weatherBackgroundAnimation forKey:@"alpha"];
+    [weatherImage setAlpha:1];
 }
 
 @end

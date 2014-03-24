@@ -13,8 +13,5 @@
 #import <FacebookSDK/FacebookSDK.h>
 
 @interface EventDetailsViewController : UITableViewController
-@property (strong, nonatomic) IBOutlet UINavigationItem *ViewController;
-- (IBAction)PinEvent:(id)sender;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *pinButton;
 @property FacebookEvent *fbEvent;
 @end

@@ -15,8 +15,5 @@
 #import "EventDetailsViewController.h"
 
 @interface EventsViewController : UITableViewController
-@property NSMutableArray *EventsList;
-
-- (void) refreshView:(NSNotification *) notification;
 
 @end

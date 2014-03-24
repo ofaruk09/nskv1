@@ -9,7 +9,9 @@
 #import "VenueFinderViewController.h"
 
 @interface VenueFinderViewController ()
-
+@property (strong, nonatomic) IBOutlet UIButton *selectLocationButton;
+@property (strong, nonatomic) IBOutlet UIImageView *crossHairView;
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @end
 
 @implementation VenueFinderViewController

@@ -16,8 +16,5 @@
 
 @interface WeatherTidesViewController : UITableViewController
 @property FacebookEvent *fbEvent;
-@property double timeToEvent;
-@property WeatherEvent *thisWeatherEvent;
-@property TidalEvent * thisTidalEvent;
-- (void) determineVenueLocation;
+
 @end

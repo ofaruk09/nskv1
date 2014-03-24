@@ -396,11 +396,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <outlet property="WeatherActualTemperature" destination="KQW-gh-hdL" id="Rmv-2h-Dwq"/>
-                                    <outlet property="WeatherFeelsLikeTemperature" destination="4At-U7-bw7" id="6Ne-7K-PwU"/>
-                                    <outlet property="WeatherImage" destination="pgG-gd-GtR" id="JFs-hI-9Lw"/>
-                                    <outlet property="WeatherTypeLabel" destination="kC2-Zg-a35" id="nEu-wS-7Kh"/>
-                                    <outlet property="WeatherVisibilityLabel" destination="7rC-Av-F75" id="gE1-H8-EzL"/>
+                                    <outlet property="weatherActualTemperature" destination="KQW-gh-hdL" id="fhh-Bl-ySV"/>
+                                    <outlet property="weatherFeelsLikeTemperature" destination="4At-U7-bw7" id="aHp-Tb-NCQ"/>
+                                    <outlet property="weatherImage" destination="pgG-gd-GtR" id="JzT-Rv-Msp"/>
+                                    <outlet property="weatherTypeLabel" destination="kC2-Zg-a35" id="N9P-dN-3vt"/>
+                                    <outlet property="weatherVisibilityLabel" destination="7rC-Av-F75" id="zxn-IQ-ad6"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="windDirectionCell" textLabel="N5d-17-kgg" detailTextLabel="m81-EN-PAf" style="IBUITableViewCellStyleValue1" id="JHC-la-86l">
@@ -537,7 +537,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <!--Pinned Events View Controller - Pinned Events-->
         <scene sceneID="ldV-rd-Ytb">
             <objects>
-                <tableViewController id="BUT-eb-4BO" customClass="pinnedEventsViewController" sceneMemberID="viewController">
+                <tableViewController id="BUT-eb-4BO" customClass="PinnedEventsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="SuR-E3-3KX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

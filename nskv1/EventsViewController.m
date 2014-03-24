@@ -11,6 +11,9 @@
 
 @interface EventsViewController ()
 
+@property NSMutableArray *EventsList;
+- (void) refreshView:(NSNotification *) notification;
+
 @end
 
 @implementation EventsViewController

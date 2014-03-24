@@ -9,7 +9,10 @@
 #import "WeatherTidesViewController.h"
 
 @interface WeatherTidesViewController ()
-
+@property double timeToEvent;
+@property WeatherEvent *thisWeatherEvent;
+@property TidalEvent * thisTidalEvent;
+- (void) determineVenueLocation;
 @end
 
 @implementation WeatherTidesViewController
@@ -214,15 +217,15 @@ bool noProblemsDownloading = true;
         weatherCell = [tableView dequeueReusableCellWithIdentifier:weatherDataCellIdentifier forIndexPath:indexPath];
         [self findWeatherImageToUse];
         // set the different bits of information here
-        weatherCell.WeatherActualTemperature.text = [thisWeatherEvent.eventTemperature stringByAppendingString:@"°C"];
-        weatherCell.WeatherFeelsLikeTemperature.text = [thisWeatherEvent.eventFeelsLikeTemperature stringByAppendingString:@"°C"];
-        weatherCell.WeatherTypeLabel.text = thisWeatherEvent.eventWeatherType;
-        weatherCell.WeatherVisibilityLabel.text = thisWeatherEvent.eventVisibility;
+        weatherCell.weatherActualTemperature.text = [thisWeatherEvent.eventTemperature stringByAppendingString:@"°C"];
+        weatherCell.weatherFeelsLikeTemperature.text = [thisWeatherEvent.eventFeelsLikeTemperature stringByAppendingString:@"°C"];
+        weatherCell.weatherTypeLabel.text = thisWeatherEvent.eventWeatherType;
+        weatherCell.weatherVisibilityLabel.text = thisWeatherEvent.eventVisibility;
         // make the text glow so it is visible on all the picture backgrounds
-        [self makeTextGlow:weatherCell.WeatherTypeLabel];
-        [self makeTextGlow:weatherCell.WeatherVisibilityLabel];
+        [self makeTextGlow:weatherCell.weatherTypeLabel];
+        [self makeTextGlow:weatherCell.weatherVisibilityLabel];
         // set the weather image
-        weatherCell.WeatherImage.image = thisWeatherEvent.eventWeatherImage;
+        weatherCell.weatherImage.image = thisWeatherEvent.eventWeatherImage;
         [weatherCell animateImage];
         return weatherCell;
     }
