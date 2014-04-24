@@ -17,7 +17,7 @@ bool errorIsShown = NO;
 {
     // the launch options are used to check if there are any remote notifications the program must handle
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-        [self saveRemoteNotification:remoteNotif];
+    [self saveRemoteNotification:remoteNotif];
     // register for push notifications
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeAlert];
     // Override point for customization after application launch.
@@ -109,9 +109,9 @@ bool errorIsShown = NO;
 {
     // formats it for use in the web service
     devTokenField = [[[[devToken description]
-                        stringByReplacingOccurrencesOfString: @"<" withString: @""]
-                        stringByReplacingOccurrencesOfString: @">" withString: @""]
-                        stringByReplacingOccurrencesOfString: @" " withString: @""];
+                       stringByReplacingOccurrencesOfString: @"<" withString: @""]
+                      stringByReplacingOccurrencesOfString: @">" withString: @""]
+                     stringByReplacingOccurrencesOfString: @" " withString: @""];
     // sends this selector when it has a device token
     [self sendDeviceTokenToService];
 }
@@ -158,11 +158,14 @@ bool errorIsShown = NO;
         
         [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             // do nothing...
+            if(!error)
+            {
+                // writes to the user defaults that the information has been sent before so it doesnt do it again
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                [defaults setBool:true forKey:@"TokenSent"];
+                [defaults synchronize];
+            }
         }];
-        // writes to the user defaults that the information has been sent before so it doesnt do it again
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:true forKey:@"TokenSent"];
-        [defaults synchronize];
     }
 }
 // Selector Description:
