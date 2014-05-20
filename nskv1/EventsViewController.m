@@ -36,7 +36,6 @@ UIActivityIndicatorView *loadingIndicator;
 - (void)viewDidLoad
 {
     // make this controller listen for when the facebook events have completed downloading
-    
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshView:)
@@ -109,6 +108,10 @@ UIActivityIndicatorView *loadingIndicator;
 // this selector is called when the facebook class has sent a notification that the events have completed downloading
 - (void)refreshView:(NSNotification *)notification
 {
+    if([FacebookEvent getOnlineStatus])
+    {
+        self.navigationItem.title = @"Events (Offline)";
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
         EventsList = [FacebookEvent getEventsList];
         [self.tableView reloadData];

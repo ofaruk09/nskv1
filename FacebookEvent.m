@@ -8,6 +8,8 @@
 
 #import "FacebookEvent.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <CoreData/CoreData.h>
+#import "FbCachedEvent.h"
 
 @interface FacebookEvent()
 - (void)sendRequests:(NSArray *)fbPages;
@@ -32,15 +34,20 @@
 @synthesize eventAttending;
 @synthesize requestConnection = _requestConnection;
 @synthesize userID;
+static NSManagedObjectContext* managedContext;
 static NSMutableArray* EventsList = nil;
 static NSMutableArray* PinnedList = nil;
+static bool isOfflineMode;
 
 const NSString *PUBLIC_FACEBOOK_EVENTS = @"303838247034/events?fields=attending,name,start_time,cover,description,end_time,location,venue&before=NTQzMTUzNjA5MTAyMjQ3&limit=25";
 const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attending,name,start_time,cover,description,end_time,location,venue";
 
++ (BOOL) getOnlineStatus { return isOfflineMode; }
+
 // Selector Description:
 // Sends creates the relevant objects to begin downloading events from facebook
 - (void)downloadEvents{
+    isOfflineMode = NO;
     EventsList = [[NSMutableArray alloc]init];
     PinnedList = [[NSMutableArray alloc]init];
     NSArray *events = [[NSArray alloc]initWithObjects:PUBLIC_FACEBOOK_EVENTS,
@@ -50,6 +57,61 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
 
 - (void)dealloc {
     [_requestConnection cancel];
+}
+
+- (void)loadCachedEvents
+{
+    isOfflineMode = YES;
+    EventsList = [[NSMutableArray alloc]init];
+    PinnedList = [[NSMutableArray alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"FbCachedEvent"
+                                              inManagedObjectContext:managedContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entity];
+    NSError *error = [[NSError alloc]init];
+    NSMutableArray *fArray =  [[NSMutableArray alloc]initWithArray:[managedContext executeFetchRequest:fetchRequest error:&error]];
+    for (FbCachedEvent *cEvent in fArray) {
+        FacebookEvent *ev = [[FacebookEvent alloc]init];
+        ev.eventID = cEvent.eventID;
+        ev.eventName = cEvent.eventName;
+        ev.eventDescription = cEvent.eventDescription;
+        ev.eventLocation = cEvent.eventLocation;
+        ev.eventLongitude = cEvent.eventLongitude.floatValue;
+        ev.eventLatitude = cEvent.eventLatitude.floatValue;
+        ev.eventStartDate = cEvent.eventStartDate;
+        ev.eventEndDate = cEvent.eventEndDate;
+        ev.eventImageSource = cEvent.eventImageSource;
+        ev.eventImage = [UIImage imageWithData:cEvent.eventImage];
+        ev.eventAttending = cEvent.eventAttending.boolValue;
+        if([ev.eventStartDate.description length] > 10){
+            
+            NSDateFormatter *format = [[NSDateFormatter alloc]init];
+            [format setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+            ev.dateFormatterStart = format;
+        }
+        else{
+            NSDateFormatter *format = [[NSDateFormatter alloc]init];
+            [format setDateFormat:@"yyyy-MM-dd"];
+            ev.dateFormatterStart = format;
+        }
+        // then we do checks for the event end date
+        if ([ev.eventEndDate.description length] > 10) {
+            NSDateFormatter *format = [[NSDateFormatter alloc]init];
+            [format setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZ"];
+            ev.dateFormatterEnd = format;
+        }
+        else{
+            if(ev.eventEndDate != nil){
+                NSDateFormatter *format = [[NSDateFormatter alloc]init];
+                [format setDateFormat:@"yyyy-MM-dd"];
+                ev.dateFormatterEnd = format;
+            }
+        }
+        [EventsList addObject:ev];
+        if(ev.eventAttending) [PinnedList addObject:ev];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshEventList" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshPinnedList" object:self];
+    }
 }
 
 // Selector Description:
@@ -206,6 +268,41 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
             });
         }
     }
+    [self cacheEvents];
+}
+- (void) cacheEvents
+{
+    // delete all entities
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"FbCachedEvent"
+                                              inManagedObjectContext:managedContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entity];
+    NSError *error = [[NSError alloc]init];
+    NSMutableArray *fArray =  [[NSMutableArray alloc]initWithArray:[managedContext executeFetchRequest:fetchRequest error:&error]];
+    for (FbCachedEvent *cEvent in fArray) {
+        [managedContext deleteObject:cEvent];
+    }
+    [managedContext save:&error];
+    // rewrite all data
+    for (FacebookEvent *ev in EventsList) {
+        FbCachedEvent *ca = [NSEntityDescription insertNewObjectForEntityForName:@"FbCachedEvent" inManagedObjectContext:managedContext];
+        ca.eventID = ev.eventID;
+        ca.eventName = ev.eventName;
+        ca.eventDescription = ev.eventDescription;
+        ca.eventLocation = ev.eventLocation;
+        ca.eventLongitude = [NSNumber numberWithFloat:ev.eventLongitude];
+        ca.eventLatitude = [NSNumber numberWithFloat:ev.eventLatitude];
+        ca.eventStartDate = ev.eventStartDate;
+        ca.eventEndDate = ev.eventEndDate;
+        ca.eventImageSource = ev.eventImageSource;
+        ca.eventImage = UIImageJPEGRepresentation(ev.eventImage,0.0);
+        ca.eventAttending = [NSNumber numberWithBool:ev.eventAttending];
+        NSError *error;
+        if (![managedContext save:&error]) {
+            NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        }
+        NSLog(@"Wrote to DB");
+    }
 }
 
 // Selector Description:
@@ -220,6 +317,11 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
 + (NSMutableArray *)getPinnedList
 {
     return PinnedList;
+}
+
++ (void) setManagedObjectContext:(NSManagedObjectContext *)context
+{
+    managedContext = context;
 }
 
 //singletons tutorial

@@ -163,8 +163,8 @@ bool noProblemsDownloading = true;
     // cause the application to crash.
     
     if(noProblemsDownloading){
+        noProblemsDownloading = false;
         dispatch_async(dispatch_get_main_queue(), ^{
-            noProblemsDownloading = false;
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Something went wrong..." message:notification.object delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
             [alert show];
         });

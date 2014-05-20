@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2E07C9FD18464FB100612722 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E07C9FC18464FB100612722 /* MapKit.framework */; };
+		2E27C169192B6E5600CD0484 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E27C168192B6E5600CD0484 /* CoreData.framework */; };
+		2E27C16C192B6E8D00CD0484 /* eventModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2E27C16A192B6E8D00CD0484 /* eventModel.xcdatamodeld */; };
+		2E27C16F192B718E00CD0484 /* FbCachedEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E27C16E192B718E00CD0484 /* FbCachedEvent.m */; };
 		2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3332D818552588005A4ECF /* WeatherEvent.m */; };
 		2E41A01B185B8FCD00CDF189 /* DateTimePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E41A01A185B8FCD00CDF189 /* DateTimePickerViewController.m */; };
 		2E41A01E185D234500CDF189 /* PinnedEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E41A01D185D234500CDF189 /* PinnedEventsViewController.m */; };
@@ -26,7 +29,7 @@
 		2EDB528A1842E1C100A58733 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2EDB52881842E1C100A58733 /* Main.storyboard */; };
 		2EDB52B31842E67700A58733 /* EventsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52B21842E67700A58733 /* EventsCell.m */; };
 		2EDB52B91842ED3900A58733 /* EventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52B81842ED3900A58733 /* EventsViewController.m */; };
-		2EDB52BB1845223D00A58733 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52BA1845223D00A58733 /* FacebookSDK.framework */; };
+		2EDB52BB1845223D00A58733 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2EDB52BA1845223D00A58733 /* FacebookSDK.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		2EDB52C1184533C900A58733 /* FacebookEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EDB52C0184533C900A58733 /* FacebookEvent.m */; };
 		2EF26683185A3DF5009D2480 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2EF26682185A3DF5009D2480 /* Images.xcassets */; };
 		2EF8599D185B77C7007A6B5C /* VenueFinderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EF8599C185B77C7007A6B5C /* VenueFinderViewController.m */; };
@@ -34,6 +37,10 @@
 
 /* Begin PBXFileReference section */
 		2E07C9FC18464FB100612722 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		2E27C168192B6E5600CD0484 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2E27C16B192B6E8D00CD0484 /* eventModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = eventModel.xcdatamodel; sourceTree = "<group>"; };
+		2E27C16D192B718E00CD0484 /* FbCachedEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FbCachedEvent.h; sourceTree = "<group>"; };
+		2E27C16E192B718E00CD0484 /* FbCachedEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FbCachedEvent.m; sourceTree = "<group>"; };
 		2E3332D718552588005A4ECF /* WeatherEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherEvent.h; sourceTree = "<group>"; };
 		2E3332D818552588005A4ECF /* WeatherEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherEvent.m; sourceTree = "<group>"; };
 		2E41A019185B8FCD00CDF189 /* DateTimePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTimePickerViewController.h; sourceTree = "<group>"; };
@@ -84,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E27C169192B6E5600CD0484 /* CoreData.framework in Frameworks */,
 				2E07C9FD18464FB100612722 /* MapKit.framework in Frameworks */,
 				2EDB52BB1845223D00A58733 /* FacebookSDK.framework in Frameworks */,
 				2EDB52791842E1C100A58733 /* CoreGraphics.framework in Frameworks */,
@@ -116,6 +124,7 @@
 		2EDB52751842E1C100A58733 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2E27C168192B6E5600CD0484 /* CoreData.framework */,
 				2E07C9FC18464FB100612722 /* MapKit.framework */,
 				2EDB52BA1845223D00A58733 /* FacebookSDK.framework */,
 				2EDB52761842E1C100A58733 /* Foundation.framework */,
@@ -160,6 +169,9 @@
 				2E66757618AAF56D00686B33 /* TidalEvent.m */,
 				2E66758118AD087C00686B33 /* WeatherViewCell.h */,
 				2E66758218AD087C00686B33 /* WeatherViewCell.m */,
+				2E27C16A192B6E8D00CD0484 /* eventModel.xcdatamodeld */,
+				2E27C16D192B718E00CD0484 /* FbCachedEvent.h */,
+				2E27C16E192B718E00CD0484 /* FbCachedEvent.m */,
 			);
 			path = nskv1;
 			sourceTree = "<group>";
@@ -273,6 +285,7 @@
 			files = (
 				2EBCA6CA184F7E9600B4156E /* EventImageCell.m in Sources */,
 				2E66757A18AC0D2000686B33 /* WeatherTidesViewController.m in Sources */,
+				2E27C16C192B6E8D00CD0484 /* eventModel.xcdatamodeld in Sources */,
 				2E41A01E185D234500CDF189 /* PinnedEventsViewController.m in Sources */,
 				2E66758318AD087C00686B33 /* WeatherViewCell.m in Sources */,
 				2E3332D918552588005A4ECF /* WeatherEvent.m in Sources */,
@@ -282,6 +295,7 @@
 				2EF8599D185B77C7007A6B5C /* VenueFinderViewController.m in Sources */,
 				2E41A01B185B8FCD00CDF189 /* DateTimePickerViewController.m in Sources */,
 				2EDB52831842E1C100A58733 /* main.m in Sources */,
+				2E27C16F192B718E00CD0484 /* FbCachedEvent.m in Sources */,
 				2EDB52C1184533C900A58733 /* FacebookEvent.m in Sources */,
 				2EDB52B31842E67700A58733 /* EventsCell.m in Sources */,
 				2E66757D18AC118000686B33 /* MeterViewCell.m in Sources */,
@@ -457,6 +471,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2E27C16A192B6E8D00CD0484 /* eventModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2E27C16B192B6E8D00CD0484 /* eventModel.xcdatamodel */,
+			);
+			currentVersion = 2E27C16B192B6E8D00CD0484 /* eventModel.xcdatamodel */;
+			path = eventModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 2EDB526B1842E1C100A58733 /* Project object */;
 }

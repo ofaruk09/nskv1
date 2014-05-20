@@ -117,9 +117,11 @@ const float mpHtokt = 0.868976;
          }
          else if([data length]  ==  0 && error == nil){
              [self notifyForError:@"Cannot access the internet"];
+             return;
          }
          if(error != nil) {
              [self notifyForError:@"MetOffice is currently unavailable, please try again later"];
+             return;
          }
      }];
 }
@@ -163,9 +165,11 @@ const float mpHtokt = 0.868976;
          }
          else if([data length]  ==  0 && error == nil){
              [self notifyForError:@"Cannot access the internet"];
+             return;
          }
          if(error != nil) {
              [self notifyForError:@"MetOffice is currently unavailable, please try again later"];
+             return;
          }
      }];
 }

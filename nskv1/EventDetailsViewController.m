@@ -86,6 +86,11 @@
 
 - (void)viewDidLoad
 {
+    if([FacebookEvent getOnlineStatus])
+    {
+        pinButton.enabled = NO;
+        self.navigationItem.title = @"Event Details (Offline)";
+    }
     [super viewDidLoad];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

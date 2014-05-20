@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="FbCachedEvent" representedClassName="FbCachedEvent" syncable="YES">
+        <attribute name="eventAttending" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="eventDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventEndDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="eventID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventImage" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="eventImageSource" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventLatitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="eventLocation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventLongitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventStartDate" optional="YES" attributeType="Date" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="FbCachedEvent" positionX="160" positionY="192" width="128" height="208"/>
+    </elements>
+</model>

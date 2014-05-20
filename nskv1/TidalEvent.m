@@ -47,13 +47,14 @@ int const TIDE_TOTAL_STEPS = 4;
     [request setHTTPMethod:@"GET"];
     
     NSOperationQueue *queue = [[NSOperationQueue alloc]init];
-    
+    NSError *connectionError;
     // sends the request
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if(connectionError)
         {
             // send an error message to the user
-            [self notifyForError:@"Cannot access the internet"];
+            [self notifyForError:@"Tide Service is currently unavailable, Please try again later"];
+            return;
         }
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
                                                              options:kNilOptions
@@ -110,7 +111,8 @@ int const TIDE_TOTAL_STEPS = 4;
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if(connectionError)
         {
-            [self notifyForError:@"Cannot access the internet"];
+            [self notifyForError:@"Tide Service is currently unavailable, Please try again later"];
+            return;
         }
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
                                                              options:kNilOptions

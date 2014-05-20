@@ -27,7 +27,10 @@
 @property (strong, nonatomic) FBRequestConnection *requestConnection;
 @property NSString *userID;
 
++ (void) setManagedObjectContext:(NSManagedObjectContext *)context;
 + (NSMutableArray *) getEventsList;
 + (NSMutableArray *) getPinnedList;
++ (BOOL) getOnlineStatus;
 - (void) downloadEvents;
+- (void) loadCachedEvents;
 @end
