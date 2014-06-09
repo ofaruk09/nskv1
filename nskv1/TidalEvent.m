@@ -47,7 +47,6 @@ int const TIDE_TOTAL_STEPS = 4;
     [request setHTTPMethod:@"GET"];
     
     NSOperationQueue *queue = [[NSOperationQueue alloc]init];
-    NSError *connectionError;
     // sends the request
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if(connectionError)

@@ -301,7 +301,6 @@ const NSString *PRIVATE_FACEBOOK_EVENTS = @"457577170988971/events?fields=attend
         if (![managedContext save:&error]) {
             NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
         }
-        NSLog(@"Wrote to DB");
     }
 }
 

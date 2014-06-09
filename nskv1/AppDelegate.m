@@ -20,7 +20,7 @@ bool errorIsShown = NO;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+    [[UITabBar appearance] setTintColor:[UIColor orangeColor]];
     // the launch options are used to check if there are any remote notifications the program must handle
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     [self saveRemoteNotification:remoteNotif];
@@ -143,49 +143,75 @@ bool errorIsShown = NO;
 // checks if we have both a facebook id and a device token, then sends both to the device token web service.
 - (void)sendDeviceTokenToService
 {
+    
     // checks if we have both
     if(devTokenField == nil | fbID== nil){
         return;
     }
     // checks if we have sent it before to prevent duplicate tokens being sent from the same device
     NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    bool tokenSentBefore = [def valueForKey:@"TokenSent"];
+    NSString* tokenSentBefore = [def valueForKey:@"TokenSent"];
     if(!tokenSentBefore){
         // prepares the information to be sent by putting the info in a dictionary
-        NSString *address = @"http://somecoolname.com/DeviceService/Api/Values";
         NSDictionary *jsonDict = [[NSDictionary alloc] initWithObjectsAndKeys:
                                   fbID, @"fbID",
                                   devTokenField, @"deviceToken",
+                                  @"", @"oldToken",
                                   nil];
-        // preparing post request to be sent here
-        NSError *error;
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:address]];
-        NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:&error];
-        
-        [request setHTTPMethod:@"POST"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
-        [request setHTTPBody: requestData];
-        
-        // create an operation queue to send the data asynchronously
-        NSOperationQueue *queue = [[NSOperationQueue alloc]init];
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            if(!error)
-            {
-                // writes to the user defaults that the information has been sent before so it doesnt do it again
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                [defaults setBool:true forKey:@"TokenSent"];
-                [defaults synchronize];
-            }
-        }];
+        [self postData:jsonDict withDeviceTokenToSave:devTokenField];
     }
+    else
+    {
+        if(![tokenSentBefore isEqualToString:devTokenField])
+        {
+            NSDictionary *jsonDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                      fbID, @"fbID",
+                                      devTokenField, @"deviceToken",
+                                      tokenSentBefore, @"oldToken",
+                                      nil];
+            [self postData:jsonDict withDeviceTokenToSave:devTokenField];
+        }
+    }
+}
+
+- (void)postData:(NSDictionary *)jsonDict withDeviceTokenToSave:(NSString*)token
+{
+    NSString *address = @"http://somecoolname.com/DeviceService/Api/DeviceToken";
+    // preparing post request to be sent here
+    NSError *error;
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:address]];
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict options:0 error:&error];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setHTTPBody: requestData];
+    
+    // create an operation queue to send the data asynchronously
+    NSOperationQueue *queue = [[NSOperationQueue alloc]init];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if(!error)
+        {
+            // writes to the user defaults that the information has been sent before so it doesnt do it again
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setValue:token forKey:@"TokenSent"];
+            [defaults synchronize];
+        }
+    }];
 }
 // Selector Description:
 // Delegate for dealing with when a remote notification has arrived in app
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    NSString *message = [NSString stringWithFormat:@"%@. Please see the pinned events for more details", [[userInfo objectForKey:@"aps"] valueForKey:@"alert"]];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"An event has changed"
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
     [self saveRemoteNotification:userInfo];
 }
 // Selector Description:
@@ -216,7 +242,6 @@ bool errorIsShown = NO;
         // add the new value to the defaults
         [defaults setObject:newDefaultValue forKey:@"FacebookEventChanged"];
         // refresh the pinned list to display the alert
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshPinnedList" object:self];
     }
 }
 

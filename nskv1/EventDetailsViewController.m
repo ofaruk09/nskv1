@@ -32,16 +32,18 @@
 // this is the event handler for when the pin/unpin button is pressed.
 // if the event is pinned, it sends a message to facebook saying that the user
 // is coming to the event
-// if the event is unpinned, it sends a message to facebook saying that the user
+// if the event is unpinned, it sends a message to facebook sa  qing that the user
 // is not coming to the event
 - (IBAction)PinEvent:(id)sender
 {
+    [pinButton setEnabled:NO];
     // if the user is attending flip the values and say user is not attending
     if(fbEvent.eventAttending){
         NSString *attendingPost = [fbEvent.eventID stringByAppendingString:@"/declined"];
         // send a message to facebook
         [UIApplication sharedApplication].networkActivityIndicatorVisible = true;
         [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            [pinButton setEnabled:YES];
             if(error){
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Unpinning"
                                                                 message:@"You do not have permission to unpin this event"
@@ -65,6 +67,7 @@
         [UIApplication sharedApplication].networkActivityIndicatorVisible = true;
         // send a message to facebook
         [FBRequestConnection startWithGraphPath:attendingPost parameters:nil HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+            [pinButton setEnabled:YES];
             if(error){
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nomad Infinity Event"
                                                                 message:@"To pin this event, ensure you have Infinity membership and have joined the Nomad Members Facebook page"
@@ -84,6 +87,11 @@
     
 }
 
+- (void) viewDidAppear:(BOOL) animated {
+    [self changePinLabel];
+    [super viewDidAppear:animated];
+}
+
 - (void)viewDidLoad
 {
     if([FacebookEvent getOnlineStatus])
@@ -97,7 +105,6 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    [self changePinLabel];
 }
 
 // selector description:
